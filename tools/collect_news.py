@@ -11,8 +11,8 @@
 
 外部ライブラリは使わない（Python 3.9 標準のみ）。サイトの作りが変わると拾えなくなるので、
 0件のサイトがあれば最後に表示する。
-全国ニュースは機械で読める安定した一覧が見つからなかった（NHKのRSSは2026-08で更新停止）ため、
-下書きを作るAIが1〜2本だけ調べて足す。
+全国は国（厚生労働省・デジタル庁・文部科学省）の発表、海外は BBCニュース Japan の見出しを少しだけ集める
+（NHKのRSSは2026-08で更新停止のため使わない）。ふだんは ChatGPT の朝のブリーフ（import_handoff.py）が主で、これは予備。
 """
 
 import html
@@ -129,6 +129,39 @@ def kanko(today):
                "url": href, "date": None, "excerpt": period, "kind": "event"}
 
 
+# 国の発表は会議の開催告知や会見録が多いので、暮らしに直接関わらないものを外す
+NATIONAL_SKIP = ("審議会", "部会", "検討会", "委員会", "会見", "懇談会", "研究会", "分科会", "協議会",
+                 "民間事業者向け", "調達", "入札", "人事", "叙勲", "表彰", "採用", "職員", "業務説明会",
+                 "ダッシュボード", "病院報告", "事例集", "統計表")
+
+
+def rss(url, source_name, area, today, skip=(), limit=None):
+    """RSS 2.0 / RDF の一覧（見出し・リンク・日付）。"""
+    text = fetch(url)
+    n = 0
+    for block in re.findall(r"<item[ >].*?</item>", text, re.S):
+        title = re.search(r"<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</title>", block, re.S)
+        link = re.search(r"<link>(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?</link>", block, re.S)
+        when = re.search(r"<(?:pubDate|dc:date)>([^<]+)<", block)
+        if not title or not link:
+            continue
+        title = clean(title.group(1))
+        if any(w in title for w in skip):
+            continue
+        day = None
+        if when:
+            w = when.group(1).strip()
+            try:
+                day = datetime.fromisoformat(w[:19]).date() if w[:4].isdigit() else \
+                    datetime.strptime(w[5:16], "%d %b %Y").date()
+            except ValueError:
+                day = None
+        yield {"source_name": source_name, "area": area, "title": title, "url": link.group(1), "date": day}
+        n += 1
+        if limit and n >= limit:
+            return
+
+
 # ---------- まとめ ----------
 
 def kind_of(c):
@@ -173,7 +206,14 @@ def main():
         "タウンニュース藤沢": lambda: townnews("0601", "藤沢市", None, "タウンニュース藤沢版", today),
         "タウンニュース寒川": lambda: townnews("0603", "寒川町", "寒川", "タウンニュース茅ヶ崎・寒川版", today),
         "藤沢市観光協会 イベント": lambda: kanko(today),
+        # 全国（国の発表）と海外は、暮らしに関わるものを少しだけ
+        "厚生労働省": lambda: rss("https://www.mhlw.go.jp/stf/news.rdf", "厚生労働省", "全国", today, NATIONAL_SKIP),
+        "デジタル庁": lambda: rss("https://www.digital.go.jp/rss/news.xml", "デジタル庁", "全国", today, NATIONAL_SKIP),
+        "文部科学省": lambda: rss("https://www.mext.go.jp/b_menu/news/index.rdf", "文部科学省", "全国", today, NATIONAL_SKIP),
+        "BBCニュース Japan": lambda: rss("https://feeds.bbci.co.uk/japanese/rss.xml", "BBCニュース Japan", "海外", today),
     }
+    # 出典ごとの上限（全国・海外は少なめ）
+    caps = {"厚生労働省": 5, "デジタル庁": 3, "文部科学省": 3, "BBCニュース Japan": 4}
 
     candidates, report, seen = [], [], set()
     for name, read in sources.items():
@@ -193,8 +233,9 @@ def main():
                 got.append(c)
             got.sort(key=lambda c: (c["score"], str(c["date"])), reverse=True)
             # 種類（ニュース・イベント・グルメ）ごとに上限を数える
+            cap = caps.get(name, MAX_PER_SOURCE)
             got = [c for k in ("news", "event", "food")
-                   for c in [c for c in got if c["kind"] == k][:MAX_PER_SOURCE]]
+                   for c in [c for c in got if c["kind"] == k][:cap]]
             for c in got:
                 seen.add(c["url"])
                 if not c.get("excerpt") and c["score"] > 0:
