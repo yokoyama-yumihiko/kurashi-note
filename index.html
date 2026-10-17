@@ -9,7 +9,7 @@
   <meta
     name="description"
     content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・まちのイベント・グルメ。"
-  ><link rel="stylesheet" href="css/style.css">
+  ><link rel="stylesheet" href="css/style.css?v=202610180001">
   <meta property="og:title" content="くらしノート｜藤沢・寒川">
   <meta property="og:description" content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・イベント・グルメ">
   <meta property="og:type" content="website">
@@ -24,16 +24,23 @@
   <!-- NAV:START -->
   <div class="site-nav">
     <a class="site-brand" href="index.html"><img src="assets/favicon.png" alt="" width="24" height="24">くらしノート<small>藤沢・寒川</small></a>
-    <nav class="site-tabs" aria-label="サイト内のページ"><a href="index.html" aria-current="page"><span class="nav-long">ホーム</span><span class="nav-short">ホーム</span></a><a href="news/index.html"><span class="nav-long">今朝のニュース</span><span class="nav-short">ニュース</span></a><a href="pages/kurashi.html"><span class="nav-long">くらしの制度</span><span class="nav-short">制度</span></a><a href="pages/town.html"><span class="nav-long">イベント・グルメ</span><span class="nav-short">イベント</span></a><a href="pages/fujisawa.html"><span class="nav-long">藤沢市</span><span class="nav-short">藤沢</span></a><a href="pages/samukawa.html"><span class="nav-long">寒川町</span><span class="nav-short">寒川</span></a><a href="pages/about.html"><span class="nav-long">このサイトについて</span><span class="nav-short">サイトについて</span></a></nav>
+    <nav class="site-links" aria-label="サイト内のページ"><a href="index.html" aria-current="page">ホーム</a><a href="news/index.html">今朝のニュース</a><a href="pages/kurashi.html">くらしの制度</a><a href="pages/town.html">イベント・グルメ</a><a href="pages/fujisawa.html">藤沢市</a><a href="pages/samukawa.html">寒川町</a><a href="pages/about.html">このサイトについて</a></nav>
+    <a class="nav-cta" href="news/index.html">今朝のニュース</a>
+    <details class="site-menu">
+      <summary aria-label="メニュー"><span></span></summary>
+      <nav class="menu-list" aria-label="メニュー"><a href="index.html" aria-current="page">ホーム</a><a href="news/index.html">今朝のニュース</a><a href="pages/kurashi.html">くらしの制度</a><a href="pages/town.html">イベント・グルメ</a><a href="pages/fujisawa.html">藤沢市</a><a href="pages/samukawa.html">寒川町</a><a href="pages/about.html">このサイトについて</a></nav>
+    </details>
   </div>
   <!-- NAV:END -->
   <header>
-    <h1>くらしノート<span class="site-area">｜藤沢・寒川</span></h1>
+    <img class="top-photo" src="assets/photos/fujisawa_wide.jpg" alt="海から見た江の島と富士山" width="1600" height="666">
+    <h1>くらしノート<span class="site-area">藤沢・寒川</span></h1>
     <p>暮らしの情報を、毎朝まとめて。</p>
+    <p class="top-tags"><span>#毎朝更新</span><span>#今朝のニュース</span><span>#くらしの制度</span><span>#イベント・グルメ</span></p>
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero is-text">
       <div class="hero-text">
         <h2>くらしノートとは</h2>
         <p>
@@ -41,7 +48,6 @@
           暮らしとのつながりをわかりやすく伝えます。
         </p>
       </div>
-      <img class="hero-illust" src="assets/illust/community.png" alt="" width="1000" height="832">
     </section>
 
     <nav class="guide" aria-label="このサイトでできること">

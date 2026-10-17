@@ -10,6 +10,7 @@
 
 import html
 import json
+import re
 import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -58,6 +59,8 @@ KURASHI_END = "<!-- KURASHI:END -->"
 TOWN_START = "<!-- TOWN:START -->"
 TOWN_END = "<!-- TOWN:END -->"
 TOP_HEADLINES = 3
+# スマホが古い CSS を使い続けないよう、ページを作るたびに付ける目印
+ASSET_VER = datetime.now(JST).strftime("%Y%m%d%H%M")
 SITE_URL = "https://yokoyama-yumihiko.github.io/kurashi-note/"
 FEED_DAYS = 14  # RSS に載せる日数
 
@@ -181,15 +184,21 @@ STATIC_PAGES = {
 
 
 def nav(prefix="../", active=""):
+    """パソコン：右上に横並び。スマホ：名前・「今朝のニュース」ボタン・≡（押すと一覧）。
+    ≡ は <details> なので JavaScript なしで開け閉めできる。"""
     current = ' aria-current="page"'
     links = "".join(
-        f'<a href="{prefix}{path}"{current if key == active else ""}>'
-        f'<span class="nav-long">{long}</span><span class="nav-short">{short}</span></a>'
-        for key, path, long, short in NAV_ITEMS)
+        f'<a href="{prefix}{path}"{current if key == active else ""}>{long}</a>'
+        for key, path, long, _ in NAV_ITEMS)
     return f"""{NAV_START}
   <div class="site-nav">
     <a class="site-brand" href="{prefix}index.html"><img src="{prefix}assets/favicon.png" alt="" width="24" height="24">くらしノート<small>藤沢・寒川</small></a>
-    <nav class="site-tabs" aria-label="サイト内のページ">{links}</nav>
+    <nav class="site-links" aria-label="サイト内のページ">{links}</nav>
+    <a class="nav-cta" href="{prefix}news/index.html">今朝のニュース</a>
+    <details class="site-menu">
+      <summary aria-label="メニュー"><span></span></summary>
+      <nav class="menu-list" aria-label="メニュー">{links}</nav>
+    </details>
   </div>
   {NAV_END}"""
 
@@ -221,7 +230,7 @@ def page(title, body, css="../css/style.css", description="", feed=False, script
     meta = f'\n  <meta name="description" content="{esc(description)}">' if description else ""
     meta += head_extras(f"{title}｜{SITE_NAME}", description)
     if script:
-        meta += f'\n  <script src="{script}" defer></script>'
+        meta += f'\n  <script src="{script}?v={ASSET_VER}" defer></script>'
     if feed:
         meta += f'\n  <link rel="alternate" type="application/rss+xml" title="今朝のニュース｜{SITE_NAME}" href="feed.xml">'
     return f"""<!DOCTYPE html>
@@ -230,7 +239,7 @@ def page(title, body, css="../css/style.css", description="", feed=False, script
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{esc(title)}｜{TITLE_SUFFIX}</title>{meta}
-  <link rel="stylesheet" href="{css}">
+  <link rel="stylesheet" href="{css}?v={ASSET_VER}">
 </head>
 
 <body>
@@ -716,6 +725,7 @@ def build():
             continue
         text = path.read_text(encoding="utf-8")
         block = nav(prefix, active)
+        text = re.sub(r'href="((?:\.\./)?css/style\.css)(?:\?v=\d+)?"', rf'href="\1?v={ASSET_VER}"', text)
         if NAV_START in text:
             text = replace_block(text, NAV_START, NAV_END, block)
         else:
