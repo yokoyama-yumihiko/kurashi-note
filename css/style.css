@@ -540,3 +540,119 @@ header p {
   color: #555555;
   font-size: 0.8em;
 }
+
+/* ---------- 全ページ共通のメニュー（上に固定） ---------- */
+
+html {
+  scroll-padding-top: 112px;
+}
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 6vw;
+  border-bottom: 1px solid #C4F0D6;
+  background-color: #FFFFFF;
+}
+
+.site-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  height: 56px;
+  color: #1F3A6E;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-brand small {
+  color: #13A565;
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.site-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.site-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.site-tabs a {
+  flex-shrink: 0;
+  padding: 16px 10px 14px;
+  border-bottom: 2px solid transparent;
+  color: #2B2B2B;
+  font-size: 0.9em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-tabs a:hover {
+  color: #13A565;
+}
+
+.site-tabs a[aria-current="page"] {
+  border-bottom-color: #13A565;
+  color: #13A565;
+  font-weight: 700;
+}
+
+.nav-short {
+  display: none;
+}
+
+.site-nav ~ header {
+  padding-top: 40px;
+}
+
+@media (max-width: 960px) {
+  .site-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+  }
+
+  .site-brand {
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  .site-tabs {
+    padding: 0 8px;
+    border-top: 1px solid #C4F0D6;
+  }
+
+  .site-tabs a {
+    padding: 11px 10px 9px;
+    font-size: 0.95em;
+  }
+
+  .nav-long {
+    display: none;
+  }
+
+  .nav-short {
+    display: inline;
+  }
+
+  .site-nav ~ header {
+    padding-top: 28px;
+  }
+}
+
+/* 上のメニューがあるページでは「トップページに戻る」を出さない（同じ役目のため） */
+.site-nav ~ main .back-link {
+  display: none;
+}

@@ -160,6 +160,40 @@ def load_briefs():
 
 # ---------- ページの部品 ----------
 
+# 全ページ共通のメニュー（上に固定。スマホは横にスライドできるタブ）
+NAV_START = "<!-- NAV:START -->"
+NAV_END = "<!-- NAV:END -->"
+NAV_ITEMS = [  # (key, パス, パソコンでの表示, スマホでの表示)
+    ("home", "index.html", "ホーム", "ホーム"),
+    ("news", "news/index.html", "今朝のニュース", "ニュース"),
+    ("kurashi", "pages/kurashi.html", "くらしの制度", "制度"),
+    ("town", "pages/town.html", "イベント・グルメ", "イベント"),
+    ("fujisawa", "pages/fujisawa.html", "藤沢市", "藤沢"),
+    ("samukawa", "pages/samukawa.html", "寒川町", "寒川"),
+    ("about", "pages/about.html", "このサイトについて", "サイトについて"),
+]
+# 静的ページ（build.py が作らないページ）と、そのメニューの場所
+STATIC_PAGES = {
+    "index.html": ("", "home"), "pages/about.html": ("../", "about"),
+    "pages/fujisawa.html": ("../", "fujisawa"), "pages/fujisawa-education.html": ("../", "fujisawa"),
+    "pages/fujisawa-school.html": ("../", "fujisawa"), "pages/samukawa.html": ("../", "samukawa"),
+}
+
+
+def nav(prefix="../", active=""):
+    current = ' aria-current="page"'
+    links = "".join(
+        f'<a href="{prefix}{path}"{current if key == active else ""}>'
+        f'<span class="nav-long">{long}</span><span class="nav-short">{short}</span></a>'
+        for key, path, long, short in NAV_ITEMS)
+    return f"""{NAV_START}
+  <div class="site-nav">
+    <a class="site-brand" href="{prefix}index.html"><img src="{prefix}assets/favicon.png" alt="" width="24" height="24">くらしノート<small>藤沢・寒川</small></a>
+    <nav class="site-tabs" aria-label="サイト内のページ">{links}</nav>
+  </div>
+  {NAV_END}"""
+
+
 def head_extras(title, description, prefix="../"):
     """SNS・LINEで共有されたときのカード（OGP）と、ブラウザのアイコン。"""
     desc = description or "藤沢・寒川の暮らしの情報を毎朝まとめて。今朝のニュース・くらしの制度・イベント・グルメ"
@@ -183,7 +217,7 @@ def share_links(url, text):
             f'<a href="https://x.com/intent/post?url={u}&amp;text={t}" target="_blank" rel="noopener">X</a></p>')
 
 
-def page(title, body, css="../css/style.css", description="", feed=False, script=""):
+def page(title, body, css="../css/style.css", description="", feed=False, script="", active=""):
     meta = f'\n  <meta name="description" content="{esc(description)}">' if description else ""
     meta += head_extras(f"{title}｜{SITE_NAME}", description)
     if script:
@@ -200,6 +234,7 @@ def page(title, body, css="../css/style.css", description="", feed=False, script
 </head>
 
 <body>
+  {nav("../", active)}
   <main>
 {body}
   </main>
@@ -630,7 +665,7 @@ def build():
         newer = briefs[i - 1] if i > 0 else None
         older = briefs[i + 1] if i + 1 < len(briefs) else None
         title = f"今朝のニュース {jp_date(brief['date'])}"
-        outputs[f"{brief['date']}.html"] = page(title, render_brief_body(brief, newer, older), feed=True)
+        outputs[f"{brief['date']}.html"] = page(title, render_brief_body(brief, newer, older), feed=True, active="news")
 
     if briefs:
         latest = briefs[0]
@@ -638,11 +673,11 @@ def build():
             "今朝のニュース",
             render_brief_body(latest, older=briefs[1] if len(briefs) > 1 else None),
             description="藤沢・寒川・神奈川の暮らしに関わる今朝のニュースのまとめ",
-            feed=True,
+            feed=True, active="news",
         )
-        outputs["archive.html"] = page("過去のニュース一覧", render_archive_body(briefs))
+        outputs["archive.html"] = page("過去のニュース一覧", render_archive_body(briefs), active="news")
     else:
-        outputs["index.html"] = page("今朝のニュース", render_empty_body())
+        outputs["index.html"] = page("今朝のニュース", render_empty_body(), active="news")
 
     feed_path = NEWS_OUT / "feed.xml"
     if briefs:
@@ -658,8 +693,8 @@ def build():
         (NEWS_OUT / name).write_text(text, encoding="utf-8")
 
     TOWN_OUT.write_text(page("まちのイベント・グルメ", render_town_body(events, foods, today),
-                             description="藤沢・寒川のお祭りや催し、新しいお店の話題"), encoding="utf-8")
-    KURASHI_OUT.write_text(page("くらしの制度", render_kurashi_body(kurashi), script="../js/deadline.js"), encoding="utf-8")
+                             description="藤沢・寒川のお祭りや催し、新しいお店の話題", active="town"), encoding="utf-8")
+    KURASHI_OUT.write_text(page("くらしの制度", render_kurashi_body(kurashi), script="../js/deadline.js", active="kurashi"), encoding="utf-8")
 
     index_html = INDEX.read_text(encoding="utf-8")
     try:
@@ -673,6 +708,19 @@ def build():
         print(e)
         return 1
     INDEX.write_text(index_html, encoding="utf-8")
+
+    # 静的ページのメニューを入れ替える（目印がなければ <body> の直後に入れる）
+    for rel, (prefix, active) in STATIC_PAGES.items():
+        path = ROOT / rel
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        block = nav(prefix, active)
+        if NAV_START in text:
+            text = replace_block(text, NAV_START, NAV_END, block)
+        else:
+            text = text.replace("<body>", "<body>\n  " + block, 1)
+        path.write_text(text, encoding="utf-8")
 
     print(f"作成：news/ に {len(outputs)} ページ、くらしの制度 {len(kurashi)}件、トップページを更新")
     return 0
