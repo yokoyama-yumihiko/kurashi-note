@@ -196,3 +196,13 @@ Therefore:
 
 The goal is not only to build YPL,
 but also to create a development environment the user can understand and maintain.
+---
+
+## 12. Site Direction（2026-10-17 本人決定）
+
+- 選挙・政治の発信はしない。「一市民が作る、藤沢・寒川の暮らしのお役立ちサイト」として作る
+- 茅ヶ崎市の情報は載せない
+- 2本柱：①今朝のニュース（毎朝の暮らしに関わるニュースのまとめ、`data/news/` → `tools/build.py`。形は `docs/news-data.md`）②蓄積された情報（地域・テーマのページ、藤沢くらし制度ノートの確認済み案件など）
+- ニュース記事の本文・写真は転載しない。見出し・自分の言葉での短い要約・元記事へのリンクだけ
+- 公開（push）の前に本人が確認する。毎朝のニュースは6時に下書き→本人OKで公開。自動公開への切り替えは本人が決める
+- 配色・書体・既存のレイアウトは変えない（新しい部品は既存の5色の範囲で足す）

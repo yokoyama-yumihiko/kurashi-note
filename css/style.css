@@ -133,3 +133,146 @@ header p {
 .policy-card:visited {
   color: inherit;
 }
+/* ---------- 今朝のニュース（tools/build.py が作るページ） ---------- */
+
+.news-home {
+  margin-top: 64px;
+  padding: 28px;
+  border: 1px solid #C4F0D6;
+  border-radius: 8px;
+}
+
+.news-home-date {
+  color: #555555;
+}
+
+.news-home-list {
+  margin: 16px 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.news-home-list li {
+  padding: 10px 0;
+  border-top: 1px solid #C4F0D6;
+}
+
+.news-home-list span,
+.news-tag {
+  display: inline-block;
+  margin-right: 10px;
+  color: #13A565;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.news-home-more,
+.footer-link,
+.news-nav a,
+.news-archive a {
+  color: #1F3A6E;
+  font-weight: 600;
+}
+
+.news-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.news-keywords li {
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: #C4F0D6;
+  color: #1F3A6E;
+  font-size: 0.9em;
+}
+
+.news-section {
+  margin-top: 56px;
+}
+
+.news-list {
+  display: grid;
+  gap: 16px;
+}
+
+.news-item,
+.news-day {
+  padding: 24px;
+  border: 1px solid #C4F0D6;
+  border-radius: 8px;
+}
+
+.news-item h3,
+.news-day h3 {
+  margin: 4px 0 12px;
+  line-height: 1.35;
+}
+
+.news-item h3 a {
+  color: #1F3A6E;
+}
+
+.news-tag {
+  margin: 0;
+}
+
+.news-impact {
+  margin-top: 12px;
+}
+
+.news-impact span {
+  display: block;
+  color: #13A565;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.news-source {
+  margin-top: 12px;
+  color: #555555;
+  font-size: 0.85em;
+}
+
+.news-source a {
+  color: inherit;
+}
+
+.news-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-top: 48px;
+}
+
+.news-notice {
+  margin-top: 40px;
+  color: #555555;
+  font-size: 0.85em;
+}
+
+.news-archive {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.news-archive li {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid #C4F0D6;
+}
+
+.about-list {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.about-list li + li {
+  margin-top: 8px;
+}
