@@ -3,7 +3,18 @@
 毎朝6時に、この手順で「今朝のニュース」の下書きを作る。公開は本人が確認してから。
 利用枠（トークン）を使いすぎないため、ニュース探しはプログラムに任せ、AIは選ぶ・短く書くだけにする。
 
-## 手順
+## まずはこちら：ChatGPT の朝のブリーフを取り込む（Claude の利用枠をいちばん使わない）
+
+ChatGPT が毎朝6時に、ニュース・イベント・グルメ・制度を調べ、最後に「CLAUDE HANDOFF｜くらしノート」の jsonl ブロックを付ける（ChatGPT 側の指示文はリポジトリ外で管理）。
+
+1. 本人が貼り付けたブロックを `data/_candidates/YYYY-MM-DD.handoff.txt` に保存する（Claude は中身を読み直さない）
+2. `python3 tools/import_handoff.py data/_candidates/YYYY-MM-DD.handoff.txt` を実行。リンクを1件ずつ開いて確かめ、合わないものは捨てる。ニュース→ data/news、イベント・グルメ→ data/town.json、制度→ .seido.jsonl（DBには入れない）
+3. `keywords` が空なら、ニュースの見出しから3つ入れる
+4. 下の手順 5〜7（確認・ページ作成・本人OKで公開）
+
+ChatGPT のブリーフが来ない日や、本数が少ない日は、下の手順（自前の候補集め）で作る。
+
+## 手順（自前の候補集め）
 
 1. `python3 tools/collect_news.py` を実行し、`data/_candidates/YYYY-MM-DD.json` と `.txt` を作る（AIは使わない）
 2. 候補は **`.txt`（1行1件の短い一覧）だけを読み**、**8〜10本** を選ぶ。JSON は読まない（利用枠の節約）
