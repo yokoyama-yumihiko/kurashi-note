@@ -276,3 +276,40 @@ header p {
 .about-list li + li {
   margin-top: 8px;
 }
+
+/* ---------- くらしの制度 ---------- */
+
+.kurashi-deadline {
+  margin-bottom: 8px;
+  color: #1F3A6E;
+  font-weight: 600;
+}
+
+.kurashi-details {
+  margin-top: 12px;
+}
+
+.kurashi-details summary {
+  color: #1F3A6E;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.kurashi-details dl {
+  margin: 12px 0 0;
+}
+
+.kurashi-details dt {
+  margin-top: 12px;
+  color: #13A565;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+.kurashi-details dd {
+  margin: 0;
+}
+
+.news-notice a {
+  color: #1F3A6E;
+}

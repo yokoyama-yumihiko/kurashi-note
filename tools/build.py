@@ -1,23 +1,26 @@
-"""data/news/*.json から「今朝のニュース」のページを作る。
+"""data/ から「今朝のニュース」と「くらしの制度」のページを作る。
 
 使い方（リポジトリの一番上で）:
     python3 tools/build.py          # ページを作る
     python3 tools/build.py --check  # データの確認だけ（ファイルは書かない）
 
 外部ライブラリは使わない（Python 3.9 標準のみ）。
-データの形は docs/news-data.md を参照。
+データの形は docs/news-data.md を参照。data/kurashi.json は tools/export_kurashi.py が作る。
 """
 
 import html
 import json
 import sys
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 NEWS_DATA = ROOT / "data" / "news"
 NEWS_OUT = ROOT / "news"
+KURASHI_DATA = ROOT / "data" / "kurashi.json"
+KURASHI_OUT = ROOT / "pages" / "kurashi.html"
 INDEX = ROOT / "index.html"
+JST = timezone(timedelta(hours=9))
 
 SITE_NAME = "Yokoyama Policy Lab"
 
@@ -31,6 +34,8 @@ WEEKDAYS = "月火水木金土日"
 
 INDEX_START = "<!-- NEWS:START -->"
 INDEX_END = "<!-- NEWS:END -->"
+KURASHI_START = "<!-- KURASHI:START -->"
+KURASHI_END = "<!-- KURASHI:END -->"
 TOP_HEADLINES = 3
 
 
@@ -252,17 +257,114 @@ def render_index_block(latest):
     {INDEX_END}"""
 
 
+# ---------- くらしの制度 ----------
+
+def load_kurashi(today):
+    """期限が過ぎたものを除いて返す。export 後に日がたっても古い案件を出さないため。"""
+    if not KURASHI_DATA.exists():
+        return [], []
+    try:
+        cases = json.loads(KURASHI_DATA.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        return [], [f"kurashi.json: JSON の書き方が正しくない（{e}）"]
+    errors = []
+    for c in cases:
+        for key in ("title", "primary_source", "last_verified"):
+            if not c.get(key):
+                errors.append(f"kurashi.json「{c.get('title', '?')}」: {key} が空")
+        if c.get("primary_source") and not c["primary_source"].startswith("https://"):
+            errors.append(f"kurashi.json「{c.get('title')}」: 一次情報が https:// で始まっていない")
+    shown = [c for c in cases if not c.get("deadline_date") or c["deadline_date"] >= today]
+    return shown, errors
+
+
+def render_case(c):
+    rows = []
+    for label, key in (("対象", "target_user"), ("内容", "benefit"), ("金額", "amount"),
+                       ("期限", "deadline"), ("申し込み方法", "how_to_apply"),
+                       ("担当", "department"), ("問い合わせ", "contact")):
+        if c.get(key):
+            rows.append(f"            <dt>{label}</dt><dd>{esc(c[key])}</dd>")
+    deadline = f'<p class="kurashi-deadline">期限：{esc(c["deadline"])}</p>' if c.get("deadline") else ""
+    lead = c.get("summary") or c.get("benefit") or ""
+    rows_html = "\n".join(rows)
+    return f"""        <article class="news-item" id="{esc(c['id'])}">
+          <p class="news-tag">{esc(c.get('category') or c.get('area') or '')}</p>
+          <h3>{esc(c['title'])}</h3>
+          {deadline}
+          <p>{esc(lead)}</p>
+          <details class="kurashi-details">
+            <summary>くわしく見る</summary>
+            <dl>
+{rows_html}
+            </dl>
+          </details>
+          <p class="news-source"><a href="{esc(c['primary_source'])}" target="_blank" rel="noopener">公式の案内を見る</a>・最終確認 {esc(c['last_verified'])}</p>
+        </article>"""
+
+
+def render_kurashi_body(cases):
+    if cases:
+        items = "\n".join(render_case(c) for c in cases)
+        listing = f'      <div class="news-list">\n{items}\n      </div>'
+    else:
+        listing = "      <p>今、載せている制度はありません。</p>"
+    return f"""    <a class="back-link" href="../index.html">← トップページに戻る</a>
+
+    <section>
+      <p>藤沢くらし制度ノート</p>
+      <h1>くらしの制度</h1>
+      <p>藤沢市・神奈川県の給付・補助・申し込みなどのうち、公式の案内を確認したものを、期限の近い順に載せています。期限が過ぎたものは自動で外れます。</p>
+    </section>
+
+    <section class="news-section">
+{listing}
+    </section>
+
+    <p class="news-notice">
+      市や県の公式の発信ではありません。内容は「最終確認」の日の時点のものです。
+      申し込みの前に、必ず公式の案内で最新の情報を確かめてください。
+      <a href="about.html">このサイトについて</a>
+    </p>"""
+
+
+def render_kurashi_block(cases):
+    if cases:
+        soon = next((c for c in cases if c.get("deadline_date")), None)
+        note = f"期限が近いもの：{esc(soon['title'])}（{esc(soon['deadline'])}）" if soon else ""
+        text = f'<p>{len(cases)}件の制度を載せています。</p>\n      <p class="news-home-date">{note}</p>'
+    else:
+        text = "<p>準備中です。</p>"
+    return f"""{KURASHI_START}
+    <section class="news-home">
+      <h2>くらしの制度</h2>
+      {text}
+      <a class="news-home-more" href="pages/kurashi.html">くらしの制度を見る →</a>
+    </section>
+    {KURASHI_END}"""
+
+
+def replace_block(text, start_mark, end_mark, block):
+    start, end = text.find(start_mark), text.find(end_mark)
+    if start == -1 or end == -1:
+        raise ValueError(f"index.html に {start_mark} / {end_mark} の目印がありません。")
+    return text[:start] + block + text[end + len(end_mark):]
+
+
 # ---------- 書き出し ----------
 
 def build():
+    today = datetime.now(JST).date().isoformat()
     briefs, errors = load_briefs()
+    kurashi, kurashi_errors = load_kurashi(today)
+    errors += kurashi_errors
     if errors:
         print("データに問題があります。ページは作りませんでした。")
         for e in errors:
             print("  -", e)
         return 1
     if "--check" in sys.argv:
-        print(f"OK：{len(briefs)}日分のデータに問題はありません。")
+        print(f"OK：ニュース{len(briefs)}日分・くらしの制度{len(kurashi)}件のデータに問題はありません。")
         return 0
 
     NEWS_OUT.mkdir(exist_ok=True)
@@ -291,16 +393,20 @@ def build():
     for name, text in outputs.items():
         (NEWS_OUT / name).write_text(text, encoding="utf-8")
 
+    KURASHI_OUT.write_text(page("くらしの制度", render_kurashi_body(kurashi)), encoding="utf-8")
+
     index_html = INDEX.read_text(encoding="utf-8")
-    start, end = index_html.find(INDEX_START), index_html.find(INDEX_END)
-    if start == -1 or end == -1:
-        print("index.html に NEWS:START / NEWS:END の目印がありません。")
+    try:
+        index_html = replace_block(index_html, INDEX_START, INDEX_END,
+                                   render_index_block(briefs[0] if briefs else None))
+        index_html = replace_block(index_html, KURASHI_START, KURASHI_END,
+                                   render_kurashi_block(kurashi))
+    except ValueError as e:
+        print(e)
         return 1
-    block = render_index_block(briefs[0] if briefs else None)
-    index_html = index_html[:start] + block + index_html[end + len(INDEX_END):]
     INDEX.write_text(index_html, encoding="utf-8")
 
-    print(f"作成：news/ に {len(outputs)} ページ、トップページの「今朝のニュース」を更新")
+    print(f"作成：news/ に {len(outputs)} ページ、くらしの制度 {len(kurashi)}件、トップページを更新")
     return 0
 
 
