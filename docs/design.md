@@ -1,8 +1,8 @@
-# YPL Design System
+# くらしノート Design System
 
 ## 1. Design Philosophy
 
-Yokoyama Policy Labのデザインは、
+くらしノートのデザインは、
 
 「公共政策を、難しく見せない。」
 

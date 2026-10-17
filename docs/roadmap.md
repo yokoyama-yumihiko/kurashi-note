@@ -1,8 +1,8 @@
-# YPL Development Roadmap
+# くらしノート Development Roadmap
 
 ## 1. Goal
 
-Yokoyama Policy Labを、
+くらしノートを、
 公共政策の調査・分析・可視化・情報発信を行う
 オープンな政策プラットフォームへ発展させます。
 
@@ -25,10 +25,10 @@ Yokoyama Policy Labを、
 
 Status: In Progress
 
-## 3. Phase 2 — YPL Web
+## 3. Phase 2 — くらしノート Web
 
 目的：
-YPL Webサイトを政策情報プラットフォームへ発展させる。
+くらしノート Webサイトを政策情報プラットフォームへ発展させる。
 
 - トップページ改善
 - 政策記事
@@ -67,7 +67,7 @@ YPL Webサイトを政策情報プラットフォームへ発展させる。
 - 地域比較
 - ダッシュボード
 
-## 6. Phase 5 — YPL App
+## 6. Phase 5 — くらしノート App
 
 Flutterを利用して、
 iOS / Android対応アプリを開発します。
@@ -98,7 +98,7 @@ AIによる回答は、
 
 ## 8. Development Principle
 
-YPLは最初から巨大なシステムを作りません。
+くらしノートは最初から巨大なシステムを作りません。
 
 Small
 → Test

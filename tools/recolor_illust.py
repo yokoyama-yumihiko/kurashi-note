@@ -1,4 +1,4 @@
-"""デジタル庁のイラスト素材（PNG）を、Policy Lab の色（ネイビー・緑・薄緑・白）に塗り直す。
+"""デジタル庁のイラスト素材（PNG）を、サイトの色（ネイビー・緑・薄緑・白）に塗り直す。
 
 使い方:
     python3 tools/recolor_illust.py <元のPNG> <出力PNG> [幅=1200] [肌の色=white|light]

@@ -1,8 +1,8 @@
-# YPL Coding Rules
+# くらしノート Coding Rules
 
 ## 1. Basic Policy
 
-YPLでは、読みやすく、安全で、
+くらしノートでは、読みやすく、安全で、
 将来修正しやすいコードを優先します。
 
 複雑な実装よりも、

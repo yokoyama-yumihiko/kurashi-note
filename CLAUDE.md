@@ -1,8 +1,8 @@
-# Yokoyama Policy Lab — Claude Code Instructions
+# くらしノート｜藤沢・寒川 — Claude Code Instructions
 
 ## 1. Project
 
-Yokoyama Policy Lab (YPL) is a public policy research and information platform.
+くらしノート｜藤沢・寒川 is a personal, non-partisan local information site for Fujisawa and Samukawa (see section 12).
 
 The goal is to make public policy easier to understand and more accessible through:
 
@@ -19,7 +19,7 @@ public officials, and people interested in local communities.
 
 ## 2. Core Development Principle
 
-YPL follows:
+くらしノート follows:
 
 Small
 → Test
@@ -82,7 +82,7 @@ Important principles:
 
 Follow `docs/design.md`.
 
-YPL should prioritize:
+くらしノート should prioritize:
 
 - readability
 - accessibility
@@ -160,7 +160,7 @@ Never invent successful test results.
 
 ## 10. Future Direction
 
-YPL may eventually include:
+くらしノート may eventually include:
 
 - Policy Dashboard
 - Interactive Maps
@@ -173,7 +173,7 @@ YPL may eventually include:
 - Public Transportation Information
 - Disaster Information
 - Education and Childcare Information
-- YPL mobile applications
+- くらしノート mobile applications
 - AI Research Assistant
 
 These are long-term directions.
@@ -184,7 +184,7 @@ Do not implement them prematurely unless requested.
 
 ## 11. Working With the User
 
-The user is learning development while building YPL.
+The user is learning development while building くらしノート.
 
 Therefore:
 
@@ -194,7 +194,7 @@ Therefore:
 - preserve working code whenever possible
 - clearly distinguish required steps from optional improvements
 
-The goal is not only to build YPL,
+The goal is not only to build くらしノート,
 but also to create a development environment the user can understand and maintain.
 ---
 
@@ -210,4 +210,4 @@ but also to create a development environment the user can understand and maintai
 ### サイト名・一言（2026-10-17 本人決定）
 - サイト名：「くらしノート｜藤沢・寒川」。旧名は表に出さない（本人の指示）。<title> の後ろは「くらしノート 藤沢・寒川」
 - トップの一言：「暮らしの情報を、毎朝まとめて。」
-- リポジトリ名・公開アドレスは変えない（yokoyama-yumihiko-policy-lab のまま）
+- リポジトリ名は kurashi-note、公開アドレスは https://yokoyama-yumihiko.github.io/kurashi-note/（2026-10-17 変更）

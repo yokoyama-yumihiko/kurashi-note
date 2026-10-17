@@ -1,15 +1,15 @@
-# YPL Architecture
+# くらしノート Architecture
 
 ## 1. Purpose
 
-Yokoyama Policy Lab（YPL）は、公共政策に関する情報を、
+くらしノートは、公共政策に関する情報を、
 市民・行政・研究者・学生・報道関係者などが
 分かりやすく利用できる形で提供するための
 公共政策研究・情報発信プラットフォームです。
 
 ## 2. Core Principles
 
-YPLの開発では、以下を基本原則とします。
+くらしノートの開発では、以下を基本原則とします。
 
 1. Evidence First
    - 根拠・一次資料を重視する
@@ -31,7 +31,7 @@ YPLの開発では、以下を基本原則とします。
 
 ## 3. System Structure
 
-YPLは段階的に以下の構成へ発展させます。
+くらしノートは段階的に以下の構成へ発展させます。
 
 ### Web
 - HTML
@@ -75,13 +75,13 @@ Plan
 
 将来的には、
 
-YPL Web
+くらしノート Web
 ↓
 Policy Data Platform
 ↓
 API / Database
 ↓
-YPL Applications
+くらしノート Applications
 ↓
 AI Research Assistant
 

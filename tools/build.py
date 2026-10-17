@@ -58,7 +58,7 @@ KURASHI_END = "<!-- KURASHI:END -->"
 TOWN_START = "<!-- TOWN:START -->"
 TOWN_END = "<!-- TOWN:END -->"
 TOP_HEADLINES = 3
-SITE_URL = "https://yokoyama-yumihiko.github.io/yokoyama-yumihiko-policy-lab/"
+SITE_URL = "https://yokoyama-yumihiko.github.io/kurashi-note/"
 FEED_DAYS = 14  # RSS に載せる日数
 
 
