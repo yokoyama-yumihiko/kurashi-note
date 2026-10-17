@@ -832,3 +832,128 @@ html {
     padding-right: 84px;
   }
 }
+
+/* ---------- 天気（js/weather.js）：主役はニュースなので小さく ---------- */
+
+.weather-box {
+  margin: 8px 0 0;
+  padding: 14px 16px;
+  border: 1px solid #C4F0D6;
+  border-radius: 8px;
+}
+
+.wx-title {
+  margin-bottom: 6px;
+  color: #13A565;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+
+.wx-alert,
+.wx-calm {
+  margin-bottom: 8px;
+  font-size: 0.85em;
+}
+
+.wx-alert {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: #C4F0D6;
+  color: #1F3A6E;
+  font-weight: 700;
+}
+
+.wx-alert strong {
+  margin-right: 8px;
+}
+
+.wx-alert.is-warning {
+  background-color: #1F3A6E;
+  color: #FFFFFF;
+}
+
+.wx-calm {
+  color: #555555;
+}
+
+.wx-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.wx-row.is-next {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #C4F0D6;
+  font-size: 0.85em;
+}
+
+.wx-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  background-color: #13A565;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.wx-row.is-next .wx-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.wx-main p {
+  line-height: 1.5;
+}
+
+.wx-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.wx-max {
+  color: #13A565;
+  font-size: 1.25em;
+}
+
+.wx-min,
+.wx-pop {
+  color: #1F3A6E;
+  font-size: 0.9em;
+}
+
+.wx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.wx-chip {
+  padding: 1px 8px;
+  border-radius: 4px;
+  background-color: #C4F0D6;
+  color: #1F3A6E;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+
+.wx-note {
+  margin-top: 8px;
+  color: #555555;
+  font-size: 0.7em;
+  line-height: 1.5;
+}
+
+.wx-note a {
+  color: #1F3A6E;
+}
+
+.weather-box + .news-home {
+  margin-top: 20px;
+}

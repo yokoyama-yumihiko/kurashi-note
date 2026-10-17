@@ -9,7 +9,7 @@
   <meta
     name="description"
     content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・まちのイベント・グルメ。"
-  ><link rel="stylesheet" href="css/style.css?v=202610180006">
+  ><link rel="stylesheet" href="css/style.css?v=202610180019">
   <meta property="og:title" content="くらしノート｜藤沢・寒川">
   <meta property="og:description" content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・イベント・グルメ">
   <meta property="og:type" content="website">
@@ -17,6 +17,7 @@
   <meta property="og:image" content="https://yokoyama-yumihiko.github.io/kurashi-note/assets/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.png">
+  <script src="js/weather.js?v=202610180019" defer></script>
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 </head>
 
@@ -40,6 +41,27 @@
   </header>
 
   <main>
+    <section class="weather-box" aria-labelledby="weather-title">
+      <p class="wx-title" id="weather-title">藤沢・寒川の天気</p>
+      <div id="weather" aria-live="polite"><p class="wx-note">気象庁の予報を読み込んでいます…</p></div>
+    </section>
+
+    <!-- NEWS:START -->
+    <section class="news-home has-illust">
+      <div>
+        <h2>今朝のニュース</h2>
+        <p class="news-home-date">2026年10月17日（土）</p>
+        <ul class="news-home-list">
+          <li><a href="news/2026-10-17.html#item-1"><span>藤沢市</span>【10月15日記者発表】藤沢市消防局及び消防団で利用するシステムに対する不正アクセスによる個人情報漏洩の可能性について</a></li>
+          <li><a href="news/2026-10-17.html#item-2"><span>藤沢市</span>令和8年度藤沢市防災フェアを実施します</a></li>
+          <li><a href="news/2026-10-17.html#item-3"><span>藤沢市</span>藤沢市　インフル流行警報発令　昨年より1カ月早く</a></li>
+        </ul>
+        <a class="news-home-more" href="news/index.html">今朝のニュースを読む（6本）→</a>
+      </div>
+      <img class="news-home-illust" src="assets/illust/phone.png" alt="" width="551" height="600">
+    </section>
+    <!-- NEWS:END -->
+
     <section class="hero is-text">
       <div class="hero-text">
         <h2>くらしノートとは</h2>
@@ -73,21 +95,6 @@
       </a>
     </nav>
 
-    <!-- NEWS:START -->
-    <section class="news-home has-illust">
-      <div>
-        <h2>今朝のニュース</h2>
-        <p class="news-home-date">2026年10月17日（土）</p>
-        <ul class="news-home-list">
-          <li><a href="news/2026-10-17.html#item-1"><span>藤沢市</span>【10月15日記者発表】藤沢市消防局及び消防団で利用するシステムに対する不正アクセスによる個人情報漏洩の可能性について</a></li>
-          <li><a href="news/2026-10-17.html#item-2"><span>藤沢市</span>令和8年度藤沢市防災フェアを実施します</a></li>
-          <li><a href="news/2026-10-17.html#item-3"><span>藤沢市</span>藤沢市　インフル流行警報発令　昨年より1カ月早く</a></li>
-        </ul>
-        <a class="news-home-more" href="news/index.html">今朝のニュースを読む（6本）→</a>
-      </div>
-      <img class="news-home-illust" src="assets/illust/phone.png" alt="" width="551" height="600">
-    </section>
-    <!-- NEWS:END -->
 
     <!-- KURASHI:START -->
     <section class="news-home has-illust">

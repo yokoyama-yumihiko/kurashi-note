@@ -729,6 +729,7 @@ def build():
         text = path.read_text(encoding="utf-8")
         block = nav(prefix, active)
         text = re.sub(r'href="((?:\.\./)?css/style\.css)(?:\?v=\d+)?"', rf'href="\1?v={ASSET_VER}"', text)
+        text = re.sub(r'src="((?:\.\./)?js/[a-z]+\.js)(?:\?v=\d+)?"', rf'src="\1?v={ASSET_VER}"', text)
         if NAV_START in text:
             text = replace_block(text, NAV_START, NAV_END, block)
         else:
