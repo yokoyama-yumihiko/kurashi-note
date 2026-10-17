@@ -85,7 +85,7 @@ def kanagawa(today):
                "date": datetime(int(y), int(mo), int(d)).date()}
 
 
-def townnews(edition, area, must, today):
+def townnews(edition, area, must, source_name, today):
     base = "https://www.townnews.co.jp"
     text = fetch(f"{base}/{edition}/")
     seen = set()
@@ -104,7 +104,7 @@ def townnews(edition, area, must, today):
         excerpt = clean(desc.group(1))[:160] if desc else ""
         if must and must not in title + excerpt:
             continue
-        yield {"source_name": "タウンニュース", "area": area, "title": title, "url": url,
+        yield {"source_name": source_name, "area": area, "title": title, "url": url,
                "date": day, "excerpt": excerpt, "weekly": True}
 
 
@@ -138,8 +138,8 @@ def main():
         "藤沢市 記者発表": lambda: fujisawa("https://www.city.fujisawa.kanagawa.jp/pressreleases/index.html", "藤沢市（記者発表）", today),
         "藤沢市 新着": lambda: fujisawa("https://www.city.fujisawa.kanagawa.jp/shinchaku/index.html", "藤沢市", today),
         "神奈川県 新着": lambda: kanagawa(today),
-        "タウンニュース藤沢": lambda: townnews("0601", "藤沢市", None, today),
-        "タウンニュース寒川": lambda: townnews("0603", "寒川町", "寒川", today),
+        "タウンニュース藤沢": lambda: townnews("0601", "藤沢市", None, "タウンニュース藤沢版", today),
+        "タウンニュース寒川": lambda: townnews("0603", "寒川町", "寒川", "タウンニュース茅ヶ崎・寒川版", today),
     }
 
     candidates, report, seen = [], [], set()
@@ -176,7 +176,15 @@ def main():
     out = OUT_DIR / f"{today.isoformat()}.json"
     out.write_text(json.dumps({"date": today.isoformat(), "candidates": candidates},
                               ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    print(f"候補 {len(candidates)}件 → {out.relative_to(ROOT)}")
+    # AI が読む用の短い一覧（JSON より文字数が少なく、利用枠を節約できる）
+    # URL・出典は tools/make_brief.py が番号から埋めるので載せない
+    lines = [f"{today.isoformat()} 候補 {len(candidates)}件（番号｜地域｜日付｜点｜見出し｜説明）"]
+    for i, c in enumerate(candidates, 1):
+        lines.append("｜".join([str(i), c["area"], c["date"][5:], str(c["score"]),
+                               c["title"], c.get("excerpt", "")[:100]]))
+    brief_out = OUT_DIR / f"{today.isoformat()}.txt"
+    brief_out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"候補 {len(candidates)}件 → {out.relative_to(ROOT)}（AI用の短い一覧：{brief_out.relative_to(ROOT)}）")
     for line in report:
         print("  -", line)
     return 0

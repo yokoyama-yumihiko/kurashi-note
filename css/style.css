@@ -313,3 +313,31 @@ header p {
 .news-notice a {
   color: #1F3A6E;
 }
+
+/* ---------- アイコン・残り日数 ---------- */
+
+.topic-icon {
+  display: inline-block;
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 6px;
+  vertical-align: -0.3em;
+  background-color: #13A565;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.kurashi-left {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 1px 8px;
+  border: 1px solid #13A565;
+  border-radius: 4px;
+  color: #13A565;
+  font-size: 0.85em;
+}
+
+.kurashi-left.is-soon {
+  background-color: #13A565;
+  color: #FFFFFF;
+}

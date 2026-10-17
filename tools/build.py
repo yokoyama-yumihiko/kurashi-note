@@ -32,15 +32,45 @@ TOPICS = [
 ]
 WEEKDAYS = "月火水木金土日"
 
+# 分野ごとのアイコン（assets/icons/。デジタル庁のアイコン素材を緑に色変更。leaf だけ自作）
+TOPIC_ICONS = {
+    "子育て・教育": "child", "福祉・医療・介護": "health", "防災・安全": "attention",
+    "交通・まちづくり": "itinerary", "環境・エネルギー": "leaf", "くらし・お金": "money",
+    "仕事・経済": "work", "平和・人権": "family", "その他": "information",
+}
+# くらしの制度の分類（自由な文字）は、含まれる言葉で選ぶ
+CASE_ICONS = [
+    (("子育て", "保育", "教育", "学校", "不登校", "児童"), "child"),
+    (("医療", "福祉", "介護", "健康", "障がい"), "health"),
+    (("防災", "災害"), "attention"),
+    (("物価", "生活", "給付", "お金", "税", "手当"), "money"),
+    (("仕事", "就労", "雇用"), "work"),
+]
+
 INDEX_START = "<!-- NEWS:START -->"
 INDEX_END = "<!-- NEWS:END -->"
 KURASHI_START = "<!-- KURASHI:START -->"
 KURASHI_END = "<!-- KURASHI:END -->"
 TOP_HEADLINES = 3
+SITE_URL = "https://yokoyama-yumihiko.github.io/yokoyama-yumihiko-policy-lab/"
+FEED_DAYS = 14  # RSS に載せる日数
 
 
 def esc(text):
     return html.escape(str(text), quote=True)
+
+
+def icon(name, prefix="../"):
+    """色はCSS（mask）で付ける。読み上げでは飛ばす。"""
+    return (f'<span class="topic-icon" style="--icon:url({prefix}assets/icons/{name}_line.svg)"'
+            ' aria-hidden="true"></span>')
+
+
+def case_icon(text):
+    for words, name in CASE_ICONS:
+        if any(w in text for w in words):
+            return name
+    return "information"
 
 
 def jp_date(iso):
@@ -93,6 +123,19 @@ def check_brief(path, brief):
     return errors
 
 
+def repeated_urls(briefs):
+    """前の日にも載せたリンクを「注意」として返す（エラーにはしない）。"""
+    seen, notes = {}, []
+    for brief in sorted(briefs, key=lambda b: b["date"]):
+        for item in brief.get("items", []):
+            url = item.get("url")
+            if url in seen:
+                notes.append(f"{brief['date']}: 「{item.get('title')}」は {seen[url]} にも載せています")
+            else:
+                seen[url] = brief["date"]
+    return notes
+
+
 def load_briefs():
     briefs, errors = [], []
     for path in sorted(NEWS_DATA.glob("*.json")):
@@ -109,8 +152,12 @@ def load_briefs():
 
 # ---------- ページの部品 ----------
 
-def page(title, body, css="../css/style.css", description=""):
+def page(title, body, css="../css/style.css", description="", feed=False, script=""):
     meta = f'\n  <meta name="description" content="{esc(description)}">' if description else ""
+    if script:
+        meta += f'\n  <script src="{script}" defer></script>'
+    if feed:
+        meta += f'\n  <link rel="alternate" type="application/rss+xml" title="今朝のニュース｜{SITE_NAME}" href="feed.xml">'
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -139,7 +186,7 @@ NOTICE = """    <p class="news-notice">
 def render_item(item):
     published = f"・{esc(item['published'])}" if item.get("published") else ""
     return f"""        <article class="news-item">
-          <p class="news-tag">{esc(item['topic'])}</p>
+          <p class="news-tag">{icon(TOPIC_ICONS.get(item['topic'], 'information'))}{esc(item['topic'])}</p>
           <h3><a href="{esc(item['url'])}" target="_blank" rel="noopener">{esc(item['title'])}</a></h3>
           <p>{esc(item['summary'])}</p>
           <p class="news-impact"><span>暮らしへの影響</span>{esc(item['impact'])}</p>
@@ -197,7 +244,9 @@ def render_brief_body(brief, newer=None, older=None):
     nav.append('<a href="archive.html">過去のニュース一覧</a>')
     if newer:
         nav.append(f'<a href="{newer["date"]}.html">{jp_date(newer["date"])} →</a>')
-    parts += ["", f'    <nav class="news-nav">{" ".join(nav)}</nav>', "", NOTICE]
+    parts += ["", f'    <nav class="news-nav">{" ".join(nav)}</nav>',
+              '    <p class="news-notice">毎朝のニュースは <a href="feed.xml">RSS（フィード）</a> でも受け取れます。</p>',
+              "", NOTICE]
     return "\n".join(parts)
 
 
@@ -257,6 +306,34 @@ def render_index_block(latest):
     {INDEX_END}"""
 
 
+def render_feed(briefs):
+    """今朝のニュースの RSS 2.0。1本ずつ記事として流す。"""
+    entries = []
+    for brief in briefs[:FEED_DAYS]:
+        d = date.fromisoformat(brief["date"])
+        pub = datetime(d.year, d.month, d.day, 7, 0, tzinfo=JST).strftime("%a, %d %b %Y %H:%M:%S +0900")
+        page_url = f"{SITE_URL}news/{brief['date']}.html"
+        for i, it in enumerate(brief["items"], 1):
+            entries.append(f"""    <item>
+      <title>{esc(f"［{it['area']}］{it['title']}")}</title>
+      <link>{esc(it['url'])}</link>
+      <guid isPermaLink="false">{esc(page_url)}#{i}</guid>
+      <description>{esc(it['summary'] + ' ' + it['impact'] + '（出典：' + it['source_name'] + '）')}</description>
+      <pubDate>{pub}</pubDate>
+    </item>""")
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>今朝のニュース｜{SITE_NAME}</title>
+    <link>{SITE_URL}news/index.html</link>
+    <description>藤沢・寒川・神奈川の暮らしに関わるニュースのまとめ（要約はAIを使い、運営者が確認しています）</description>
+    <language>ja</language>
+{chr(10).join(entries)}
+  </channel>
+</rss>
+"""
+
+
 # ---------- くらしの制度 ----------
 
 def load_kurashi(today):
@@ -285,11 +362,15 @@ def render_case(c):
                        ("担当", "department"), ("問い合わせ", "contact")):
         if c.get(key):
             rows.append(f"            <dt>{label}</dt><dd>{esc(c[key])}</dd>")
-    deadline = f'<p class="kurashi-deadline">期限：{esc(c["deadline"])}</p>' if c.get("deadline") else ""
+    deadline = ""
+    if c.get("deadline"):
+        until = f' data-deadline="{esc(c["deadline_date"])}"' if c.get("deadline_date") else ""
+        deadline = f'<p class="kurashi-deadline"{until}>期限：{esc(c["deadline"])}</p>'
+    tag = c.get('category') or c.get('area') or ''
     lead = c.get("summary") or c.get("benefit") or ""
     rows_html = "\n".join(rows)
     return f"""        <article class="news-item" id="{esc(c['id'])}">
-          <p class="news-tag">{esc(c.get('category') or c.get('area') or '')}</p>
+          <p class="news-tag">{icon(case_icon(tag))}{esc(tag)}</p>
           <h3>{esc(c['title'])}</h3>
           {deadline}
           <p>{esc(lead)}</p>
@@ -363,6 +444,8 @@ def build():
         for e in errors:
             print("  -", e)
         return 1
+    for note in repeated_urls(briefs):
+        print("注意：", note)
     if "--check" in sys.argv:
         print(f"OK：ニュース{len(briefs)}日分・くらしの制度{len(kurashi)}件のデータに問題はありません。")
         return 0
@@ -373,7 +456,7 @@ def build():
         newer = briefs[i - 1] if i > 0 else None
         older = briefs[i + 1] if i + 1 < len(briefs) else None
         title = f"今朝のニュース {jp_date(brief['date'])}"
-        outputs[f"{brief['date']}.html"] = page(title, render_brief_body(brief, newer, older))
+        outputs[f"{brief['date']}.html"] = page(title, render_brief_body(brief, newer, older), feed=True)
 
     if briefs:
         latest = briefs[0]
@@ -381,10 +464,17 @@ def build():
             "今朝のニュース",
             render_brief_body(latest, older=briefs[1] if len(briefs) > 1 else None),
             description="藤沢・寒川・神奈川の暮らしに関わる今朝のニュースのまとめ",
+            feed=True,
         )
         outputs["archive.html"] = page("過去のニュース一覧", render_archive_body(briefs))
     else:
         outputs["index.html"] = page("今朝のニュース", render_empty_body())
+
+    feed_path = NEWS_OUT / "feed.xml"
+    if briefs:
+        feed_path.write_text(render_feed(briefs), encoding="utf-8")
+    elif feed_path.exists():
+        feed_path.unlink()
 
     # 消えたデータのページを残さない
     for old in NEWS_OUT.glob("*.html"):
@@ -393,7 +483,7 @@ def build():
     for name, text in outputs.items():
         (NEWS_OUT / name).write_text(text, encoding="utf-8")
 
-    KURASHI_OUT.write_text(page("くらしの制度", render_kurashi_body(kurashi)), encoding="utf-8")
+    KURASHI_OUT.write_text(page("くらしの制度", render_kurashi_body(kurashi), script="../js/deadline.js"), encoding="utf-8")
 
     index_html = INDEX.read_text(encoding="utf-8")
     try:
