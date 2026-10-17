@@ -323,8 +323,12 @@ header p {
   margin-right: 6px;
   vertical-align: -0.3em;
   background-color: #13A565;
-  -webkit-mask: var(--icon) center / contain no-repeat;
-  mask: var(--icon) center / contain no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .kurashi-left {
@@ -340,4 +344,166 @@ header p {
 .kurashi-left.is-soon {
   background-color: #13A565;
   color: #FFFFFF;
+}
+
+/* ---------- イラスト・案内（2026-10-17） ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.hero-illust,
+.news-home-illust,
+.page-illust {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.guide {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.guide-item {
+  display: block;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #C4F0D6;
+  color: #2B2B2B;
+  text-decoration: none;
+}
+
+.guide-item strong {
+  display: block;
+  margin: 8px 0 4px;
+  color: #1F3A6E;
+}
+
+.guide-item span:last-child {
+  font-size: 0.9em;
+}
+
+.guide-item .topic-icon {
+  width: 1.8em;
+  height: 1.8em;
+}
+
+.news-home.has-illust {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: 24px;
+  align-items: center;
+}
+
+.page-illust {
+  max-width: 280px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .guide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .guide-item {
+    padding: 16px;
+  }
+
+  .news-home.has-illust {
+    grid-template-columns: 1fr;
+  }
+
+  .news-home-illust {
+    order: -1;
+    max-width: 160px;
+  }
+}
+
+/* ---------- まちのイベント・グルメ ---------- */
+
+.town-events {
+  display: grid;
+  gap: 16px;
+}
+
+.town-event {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid #C4F0D6;
+  border-radius: 8px;
+}
+
+.town-event h3 {
+  margin: 0 0 4px;
+  font-size: 1.05em;
+}
+
+.town-event h3 a {
+  color: #1F3A6E;
+}
+
+.town-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  border-radius: 8px;
+  background-color: #13A565;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.town-date span {
+  font-size: 1.15em;
+  font-weight: 700;
+}
+
+.town-date.is-open {
+  background-color: #C4F0D6;
+  color: #1F3A6E;
+}
+
+.town-date.is-open span {
+  font-size: 0.95em;
+}
+
+.town-when {
+  color: #1F3A6E;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.share {
+  margin-top: 32px;
+  font-size: 0.95em;
+}
+
+.share a {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 2px 14px;
+  border: 1px solid #13A565;
+  border-radius: 4px;
+  color: #13A565;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-area {
+  white-space: nowrap;
 }

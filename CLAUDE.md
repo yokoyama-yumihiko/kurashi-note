@@ -206,3 +206,8 @@ but also to create a development environment the user can understand and maintai
 - ニュース記事の本文・写真は転載しない。見出し・自分の言葉での短い要約・元記事へのリンクだけ
 - 公開（push）の前に本人が確認する。毎朝のニュースは6時に下書き→本人OKで公開。自動公開への切り替えは本人が決める
 - 配色・書体・既存のレイアウトは変えない（新しい部品は既存の5色の範囲で足す）
+
+### サイト名・一言（2026-10-17 本人決定）
+- サイト名：「くらしノート｜藤沢・寒川」（旧 Yokoyama Policy Lab）。<title> の後ろは「くらしノート 藤沢・寒川」
+- トップの一言：「暮らしの情報を、毎朝まとめて。」
+- リポジトリ名・公開アドレスは変えない（yokoyama-yumihiko-policy-lab のまま）

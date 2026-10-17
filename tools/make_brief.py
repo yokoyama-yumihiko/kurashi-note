@@ -12,8 +12,15 @@ picks.json の形:
   "keywords": ["...", "...", "..."],
   "picks": [{"n": 1, "topic": "防災・安全", "summary": "...", "impact": "..."}],
   "extra": [ data/news の items と同じ形（全国ニュースなど、候補にないもの） ],
-  "today_in_history": { ... }   # なければ書かない
+  "today_in_history": { ... },  # なければ書かない
+  "town": [                       # まちのイベント・グルメ（なければ書かない）
+    {"n": 48, "kind": "event", "date_start": "2026-10-18", "date_end": "", "when": "10月18日（日）",
+     "place": "秋葉台公園", "summary": "..."},
+    {"n": 12, "kind": "food", "place": "辻堂", "summary": "..."}
+  ]
 }
+town は data/town.json に足す（同じリンクは上書き）。終わって7日たったイベントと、
+載せて90日たったグルメはここで消す（表示は build.py が日付で絞る）。
 """
 
 import json
@@ -22,6 +29,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+TOWN = ROOT / "data" / "town.json"
 CAND = ROOT / "data" / "_candidates"
 OUT = ROOT / "data" / "news"
 JST = timezone(timedelta(hours=9))
@@ -53,6 +61,30 @@ def main():
     brief = {"date": day, "keywords": picks.get("keywords", []), "items": items}
     if picks.get("today_in_history"):
         brief["today_in_history"] = picks["today_in_history"]
+
+    if picks.get("town"):
+        town = json.loads(TOWN.read_text(encoding="utf-8")) if TOWN.exists() else []
+        by_url = {t["url"]: t for t in town}
+        for p in picks["town"]:
+            c = candidates[int(p["n"]) - 1]
+            entry = {"kind": p["kind"], "title": c["title"], "when": p.get("when", ""),
+                     "date_start": p.get("date_start", ""), "date_end": p.get("date_end", ""),
+                     "place": p.get("place", ""), "area": p.get("area", c["area"]),
+                     "summary": p["summary"], "source_name": c["source_name"], "url": c["url"],
+                     "added": day}
+            by_url[c["url"]] = entry
+        today = date.fromisoformat(day)
+        keep = []
+        for t in by_url.values():
+            if t["kind"] == "event":
+                last = t.get("date_end") or t.get("date_start")
+                if last and (today - date.fromisoformat(last)).days > 7:
+                    continue
+            elif (today - date.fromisoformat(t["added"])).days > 90:
+                continue
+            keep.append(t)
+        TOWN.write_text(json.dumps(keep, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"まちのイベント・グルメ：{len(picks['town'])}件を追加・更新（全部で{len(keep)}件）")
 
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / f"{day}.json"

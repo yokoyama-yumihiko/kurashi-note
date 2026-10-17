@@ -4,52 +4,107 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Yokoyama Policy Lab</title>
+  <title>くらしノート｜藤沢・寒川</title>
 
   <meta
     name="description"
-    content="Yokoyama Policy Labは、地域・政策・データをわかりやすく届ける公共政策プラットフォームです。"
+    content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・まちのイベント・グルメ。"
   ><link rel="stylesheet" href="css/style.css">
+  <meta property="og:title" content="くらしノート｜藤沢・寒川">
+  <meta property="og:description" content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・イベント・グルメ">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="くらしノート｜藤沢・寒川">
+  <meta property="og:image" content="https://yokoyama-yumihiko.github.io/yokoyama-yumihiko-policy-lab/assets/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 </head>
 
 <body>
   <header>
-    <h1>Yokoyama Policy Lab</h1>
-    <p>地域から、政策をもっとわかりやすく。</p>
+    <h1>くらしノート<span class="site-area">｜藤沢・寒川</span></h1>
+    <p>暮らしの情報を、毎朝まとめて。</p>
   </header>
 
   <main>
-    <section>
-      <h2>Policy Lab</h2>
-      <p>
-        地域の課題、政策、データを調べ、
-        暮らしとのつながりをわかりやすく伝えます。
-      </p>
+    <section class="hero">
+      <div class="hero-text">
+        <h2>くらしノートとは</h2>
+        <p>
+          地域の課題、政策、データを調べ、
+          暮らしとのつながりをわかりやすく伝えます。
+        </p>
+      </div>
+      <img class="hero-illust" src="assets/illust/community.png" alt="" width="1000" height="832">
     </section>
 
+    <nav class="guide" aria-label="このサイトでできること">
+      <a class="guide-item" href="news/index.html">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/information_line.svg);mask-image:url(assets/icons/information_line.svg)" aria-hidden="true"></span>
+        <strong>今朝のニュース</strong>
+        <span>暮らしに関わるニュースを毎朝まとめて</span>
+      </a>
+      <a class="guide-item" href="pages/kurashi.html">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/money_line.svg);mask-image:url(assets/icons/money_line.svg)" aria-hidden="true"></span>
+        <strong>くらしの制度</strong>
+        <span>給付・補助・申し込みを期限の近い順に</span>
+      </a>
+      <a class="guide-item" href="pages/town.html">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/food_line.svg);mask-image:url(assets/icons/food_line.svg)" aria-hidden="true"></span>
+        <strong>イベント・グルメ</strong>
+        <span>お祭りや催し、新しいお店の話題</span>
+      </a>
+      <a class="guide-item" href="#area">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/municipality_line.svg);mask-image:url(assets/icons/municipality_line.svg)" aria-hidden="true"></span>
+        <strong>地域から探す</strong>
+        <span>藤沢市・寒川町の課題や取り組み</span>
+      </a>
+    </nav>
+
     <!-- NEWS:START -->
-    <section class="news-home">
-      <h2>今朝のニュース</h2>
-      <p class="news-home-date">2026年10月17日（土）</p>
-      <ul class="news-home-list">
-        <li><span>藤沢市</span>【10月15日記者発表】藤沢市消防局及び消防団で利用するシステムに対する不正アクセスによる個人情報漏洩の可能性について</li>
-        <li><span>藤沢市</span>令和8年度藤沢市防災フェアを実施します</li>
-        <li><span>藤沢市</span>藤沢市　インフル流行警報発令　昨年より1カ月早く</li>
-      </ul>
-      <a class="news-home-more" href="news/index.html">今朝のニュースを読む（6本）→</a>
+    <section class="news-home has-illust">
+      <div>
+        <h2>今朝のニュース</h2>
+        <p class="news-home-date">2026年10月17日（土）</p>
+        <ul class="news-home-list">
+          <li><span>藤沢市</span>【10月15日記者発表】藤沢市消防局及び消防団で利用するシステムに対する不正アクセスによる個人情報漏洩の可能性について</li>
+          <li><span>藤沢市</span>令和8年度藤沢市防災フェアを実施します</li>
+          <li><span>藤沢市</span>藤沢市　インフル流行警報発令　昨年より1カ月早く</li>
+        </ul>
+        <a class="news-home-more" href="news/index.html">今朝のニュースを読む（6本）→</a>
+      </div>
+      <img class="news-home-illust" src="assets/illust/phone.png" alt="" width="551" height="600">
     </section>
     <!-- NEWS:END -->
 
     <!-- KURASHI:START -->
-    <section class="news-home">
-      <h2>くらしの制度</h2>
-      <p>2件の制度を載せています。</p>
+    <section class="news-home has-illust">
+      <div>
+        <h2>くらしの制度</h2>
+        <p>2件の制度を載せています。</p>
       <p class="news-home-date">期限が近いもの：令和9年度4月 藤沢市認可保育施設入所申込み（2026-10-23）</p>
-      <a class="news-home-more" href="pages/kurashi.html">くらしの制度を見る →</a>
+        <a class="news-home-more" href="pages/kurashi.html">くらしの制度を見る →</a>
+      </div>
+      <img class="news-home-illust" src="assets/illust/counter.png" alt="" width="600" height="387">
     </section>
     <!-- KURASHI:END -->
 
-   <section class="area-section">
+    <!-- TOWN:START -->
+    <section class="news-home has-illust">
+      <div>
+        <h2>まちのイベント・グルメ</h2>
+        <ul class="news-home-list">
+          <li><span>開催中</span>湘南キャンドル２０２６</li>
+          <li><span>開催中</span>『青春ブタ野郎はディアフレンドの夢をみない』　コラボイベント開催</li>
+          <li><span>10/18</span>令和8年度藤沢市防災フェアを実施します</li>
+        </ul>
+        <a class="news-home-more" href="pages/town.html">イベント・グルメを見る（9件）→</a>
+      </div>
+      <img class="news-home-illust" src="assets/illust/community.png" alt="" width="1000" height="832">
+    </section>
+    <!-- TOWN:END -->
+
+   <section class="area-section" id="area">
   <h2>地域から探す</h2>
 
 <div class="area-cards">
@@ -70,7 +125,7 @@
 
   <footer>
     <p><a class="footer-link" href="pages/about.html">このサイトについて</a></p>
-    <p>© Yokoyama Policy Lab</p>
+    <p>© くらしノート｜藤沢・寒川</p>
   </footer>
 </body>
 </html>

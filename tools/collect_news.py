@@ -40,6 +40,14 @@ KEYWORDS = [
 # 一覧に混じる「暮らしのニュースではないページ」
 SKIP_WORDS = ["お知らせ（news）", "通信", "マンホールカード", "フロアガイド", "職員採用", "入札", "落札",
               "市政報告", "県政報告", "議会報告", "議員"]  # 議員の活動報告（広告）は載せない
+# まちの話題の振り分け（kind）。イベント・グルメは「まちのイベント・グルメ」ページの候補になる
+EVENT_WORDS = re.compile(r"(まつり|祭|フェス|フェア|マルシェ|ライブ|コンサート|展示|個展|上映|講演|鑑賞会|体験|大会|ショー|"
+                         r"盆踊り|花火|イベント|ワークショップ|開催|開幕)")
+FOOD_WORDS = re.compile(r"(オープン|開店|新店|グルメ|カフェ|ラーメン|パン|ベーカリー|スイーツ|レストラン|食堂|ランチ|"
+                        r"居酒屋|アイス|弁当|キッチン|ごはん|酒蔵|どぶろく|直売)")
+# タウンニュースの記事の種類（ページ内の最初の <span class="tag">）。広告とコラムは使わない
+TOWNNEWS_SKIP_TAGS = ("ピックアップ（PR）", "あっとほーむデスク")
+
 # 部署名だけの見出し（例：「県土整備局 道路部道路管理課」）
 DEPT_ONLY = re.compile(r"(局|部|課|室|センター|科)$")
 
@@ -91,13 +99,16 @@ def townnews(edition, area, must, source_name, today):
     seen = set()
     for m in re.finditer(rf'(?:{base})?/{edition}/(\d{{4}})/(\d{{2}})/(\d{{2}})/(\d+)\.html', text):
         url = f"{base}/{edition}/{m.group(1)}/{m.group(2)}/{m.group(3)}/{m.group(4)}.html"
-        if url in seen or len(seen) >= 20:  # 記事ページを読みすぎない
+        if url in seen or len(seen) >= 45:  # 記事ページを読みすぎない（1週間分でおよそ50本、うち広告が2割ほど）
             continue
         seen.add(url)
         day = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3))).date()
         if (today - day).days > 6:  # タウンニュースは週刊なので少し長めに見る
             continue
         page = fetch(url)
+        tag = re.search(r'<span class="tag">([^<]+)<', page)
+        if tag and tag.group(1).strip() in TOWNNEWS_SKIP_TAGS:  # 広告（PR）・編集後記は載せない
+            continue
         t = re.search(r"<title>([^<|]+)", page)
         desc = re.search(r'<meta property="og:description" content="([^"]*)"', page)
         title = clean(t.group(1)) if t else ""
@@ -108,7 +119,28 @@ def townnews(edition, area, must, source_name, today):
                "date": day, "excerpt": excerpt, "weekly": True}
 
 
+def kanko(today):
+    """藤沢市観光協会のトップにあるイベント一覧（開催期間つき）。"""
+    text = fetch("https://www.fujisawa-kanko.jp/")
+    rows = re.findall(r'<p class="extCatList5Txt">(.*?)</p>\s*<strong>\s*<a href="([^"]+)"[^>]*>(.*?)</a>', text, re.S)
+    for period, href, title in rows:
+        period = clean(period).split("\n")[0].strip()
+        yield {"source_name": "藤沢市観光協会", "area": "藤沢市", "title": clean(title),
+               "url": href, "date": None, "excerpt": period, "kind": "event"}
+
+
 # ---------- まとめ ----------
+
+def kind_of(c):
+    if c.get("kind"):
+        return c["kind"]
+    text = c["title"] + c.get("excerpt", "")
+    if FOOD_WORDS.search(c["title"]):
+        return "food"
+    if EVENT_WORDS.search(text):
+        return "event"
+    return "news"
+
 
 def score(c):
     text = c["title"] + c.get("excerpt", "")
@@ -140,6 +172,7 @@ def main():
         "神奈川県 新着": lambda: kanagawa(today),
         "タウンニュース藤沢": lambda: townnews("0601", "藤沢市", None, "タウンニュース藤沢版", today),
         "タウンニュース寒川": lambda: townnews("0603", "寒川町", "寒川", "タウンニュース茅ヶ崎・寒川版", today),
+        "藤沢市観光協会 イベント": lambda: kanko(today),
     }
 
     candidates, report, seen = [], [], set()
@@ -156,9 +189,12 @@ def main():
                 if c["date"] and not c.get("weekly") and (today - c["date"]).days > days:
                     continue
                 c["score"] = score(c)
+                c["kind"] = kind_of(c)
                 got.append(c)
             got.sort(key=lambda c: (c["score"], str(c["date"])), reverse=True)
-            got = got[:MAX_PER_SOURCE]
+            # 種類（ニュース・イベント・グルメ）ごとに上限を数える
+            got = [c for k in ("news", "event", "food")
+                   for c in [c for c in got if c["kind"] == k][:MAX_PER_SOURCE]]
             for c in got:
                 seen.add(c["url"])
                 if not c.get("excerpt") and c["score"] > 0:
@@ -177,11 +213,14 @@ def main():
     out.write_text(json.dumps({"date": today.isoformat(), "candidates": candidates},
                               ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     # AI が読む用の短い一覧（JSON より文字数が少なく、利用枠を節約できる）
-    # URL・出典は tools/make_brief.py が番号から埋めるので載せない
+    # URL・出典は tools/make_brief.py が番号から埋めるので載せない。種類ごとにまとめる
     lines = [f"{today.isoformat()} 候補 {len(candidates)}件（番号｜地域｜日付｜点｜見出し｜説明）"]
-    for i, c in enumerate(candidates, 1):
-        lines.append("｜".join([str(i), c["area"], c["date"][5:], str(c["score"]),
-                               c["title"], c.get("excerpt", "")[:100]]))
+    for kind, label in (("news", "ニュース"), ("event", "イベント"), ("food", "グルメ")):
+        lines.append(f"## {label}")
+        for i, c in enumerate(candidates, 1):
+            if c["kind"] == kind:
+                lines.append("｜".join([str(i), c["area"], c["date"][5:], str(c["score"]),
+                                       c["title"], c.get("excerpt", "")[:100]]))
     brief_out = OUT_DIR / f"{today.isoformat()}.txt"
     brief_out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"候補 {len(candidates)}件 → {out.relative_to(ROOT)}（AI用の短い一覧：{brief_out.relative_to(ROOT)}）")

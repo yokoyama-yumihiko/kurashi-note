@@ -19,10 +19,14 @@ NEWS_DATA = ROOT / "data" / "news"
 NEWS_OUT = ROOT / "news"
 KURASHI_DATA = ROOT / "data" / "kurashi.json"
 KURASHI_OUT = ROOT / "pages" / "kurashi.html"
+TOWN_DATA = ROOT / "data" / "town.json"
+TOWN_OUT = ROOT / "pages" / "town.html"
+FOOD_DAYS = 60  # グルメを表示しておく日数
 INDEX = ROOT / "index.html"
 JST = timezone(timedelta(hours=9))
 
-SITE_NAME = "Yokoyama Policy Lab"
+SITE_NAME = "くらしノート｜藤沢・寒川"  # 2026-10-17 本人決定（旧 Yokoyama Policy Lab）
+TITLE_SUFFIX = "くらしノート 藤沢・寒川"  # <title> では「｜」が重ならないように
 
 # 表示順もこの順。茅ヶ崎市は載せない（2026-10-17 本人決定）
 AREAS = ["藤沢市", "寒川町", "神奈川県", "全国", "海外"]
@@ -32,10 +36,10 @@ TOPICS = [
 ]
 WEEKDAYS = "月火水木金土日"
 
-# 分野ごとのアイコン（assets/icons/。デジタル庁のアイコン素材を緑に色変更。leaf だけ自作）
+# 分野ごとのアイコン（assets/icons/。デジタル庁のアイコン素材を緑に色変更。leaf・bus は自作）
 TOPIC_ICONS = {
     "子育て・教育": "child", "福祉・医療・介護": "health", "防災・安全": "attention",
-    "交通・まちづくり": "itinerary", "環境・エネルギー": "leaf", "くらし・お金": "money",
+    "交通・まちづくり": "bus", "環境・エネルギー": "leaf", "くらし・お金": "money",
     "仕事・経済": "work", "平和・人権": "family", "その他": "information",
 }
 # くらしの制度の分類（自由な文字）は、含まれる言葉で選ぶ
@@ -51,6 +55,8 @@ INDEX_START = "<!-- NEWS:START -->"
 INDEX_END = "<!-- NEWS:END -->"
 KURASHI_START = "<!-- KURASHI:START -->"
 KURASHI_END = "<!-- KURASHI:END -->"
+TOWN_START = "<!-- TOWN:START -->"
+TOWN_END = "<!-- TOWN:END -->"
 TOP_HEADLINES = 3
 SITE_URL = "https://yokoyama-yumihiko.github.io/yokoyama-yumihiko-policy-lab/"
 FEED_DAYS = 14  # RSS に載せる日数
@@ -61,8 +67,10 @@ def esc(text):
 
 
 def icon(name, prefix="../"):
-    """色はCSS（mask）で付ける。読み上げでは飛ばす。"""
-    return (f'<span class="topic-icon" style="--icon:url({prefix}assets/icons/{name}_line.svg)"'
+    """色はCSS（mask）で付ける。読み上げでは飛ばす。
+    url はページからの相対パスにしたいので、CSS変数ではなく style に直接書く。"""
+    url = f"url({prefix}assets/icons/{name}_line.svg)"
+    return (f'<span class="topic-icon" style="-webkit-mask-image:{url};mask-image:{url}"'
             ' aria-hidden="true"></span>')
 
 
@@ -152,8 +160,32 @@ def load_briefs():
 
 # ---------- ページの部品 ----------
 
+def head_extras(title, description, prefix="../"):
+    """SNS・LINEで共有されたときのカード（OGP）と、ブラウザのアイコン。"""
+    desc = description or "藤沢・寒川の暮らしの情報を毎朝まとめて。今朝のニュース・くらしの制度・イベント・グルメ"
+    return f"""
+  <meta property="og:title" content="{esc(title)}">
+  <meta property="og:description" content="{esc(desc)}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{SITE_NAME}">
+  <meta property="og:image" content="{SITE_URL}assets/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="{prefix}assets/favicon.png">
+  <link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon.png">"""
+
+
+def share_links(url, text):
+    """LINE・X で送るためのリンク（外部のスクリプトは読み込まない）。"""
+    from urllib.parse import quote
+    u, t = quote(url, safe=""), quote(text, safe="")
+    return (f'    <p class="share">このページを送る：'
+            f'<a href="https://social-plugins.line.me/lineit/share?url={u}" target="_blank" rel="noopener">LINE</a>'
+            f'<a href="https://x.com/intent/post?url={u}&amp;text={t}" target="_blank" rel="noopener">X</a></p>')
+
+
 def page(title, body, css="../css/style.css", description="", feed=False, script=""):
     meta = f'\n  <meta name="description" content="{esc(description)}">' if description else ""
+    meta += head_extras(f"{title}｜{SITE_NAME}", description)
     if script:
         meta += f'\n  <script src="{script}" defer></script>'
     if feed:
@@ -163,7 +195,7 @@ def page(title, body, css="../css/style.css", description="", feed=False, script
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{esc(title)}｜{SITE_NAME}</title>{meta}
+  <title>{esc(title)}｜{TITLE_SUFFIX}</title>{meta}
   <link rel="stylesheet" href="{css}">
 </head>
 
@@ -244,7 +276,8 @@ def render_brief_body(brief, newer=None, older=None):
     nav.append('<a href="archive.html">過去のニュース一覧</a>')
     if newer:
         nav.append(f'<a href="{newer["date"]}.html">{jp_date(newer["date"])} →</a>')
-    parts += ["", f'    <nav class="news-nav">{" ".join(nav)}</nav>',
+    parts += ["", share_links(f"{SITE_URL}news/{brief['date']}.html", f"今朝のニュース {jp_date(brief['date'])}｜{SITE_NAME}"),
+              "", f'    <nav class="news-nav">{" ".join(nav)}</nav>',
               '    <p class="news-notice">毎朝のニュースは <a href="feed.xml">RSS（フィード）</a> でも受け取れます。</p>',
               "", NOTICE]
     return "\n".join(parts)
@@ -291,17 +324,20 @@ def render_index_block(latest):
     </section>
     {INDEX_END}"""
     heads = "\n".join(
-        f'        <li><span>{esc(it["area"])}</span>{esc(it["title"])}</li>'
+        f'          <li><span>{esc(it["area"])}</span>{esc(it["title"])}</li>'
         for it in latest["items"][:TOP_HEADLINES]
     )
     return f"""{INDEX_START}
-    <section class="news-home">
-      <h2>今朝のニュース</h2>
-      <p class="news-home-date">{jp_date(latest['date'])}</p>
-      <ul class="news-home-list">
+    <section class="news-home has-illust">
+      <div>
+        <h2>今朝のニュース</h2>
+        <p class="news-home-date">{jp_date(latest['date'])}</p>
+        <ul class="news-home-list">
 {heads}
-      </ul>
-      <a class="news-home-more" href="news/index.html">今朝のニュースを読む（{len(latest['items'])}本）→</a>
+        </ul>
+        <a class="news-home-more" href="news/index.html">今朝のニュースを読む（{len(latest['items'])}本）→</a>
+      </div>
+      <img class="news-home-illust" src="assets/illust/phone.png" alt="" width="551" height="600">
     </section>
     {INDEX_END}"""
 
@@ -417,12 +453,148 @@ def render_kurashi_block(cases):
     else:
         text = "<p>準備中です。</p>"
     return f"""{KURASHI_START}
-    <section class="news-home">
-      <h2>くらしの制度</h2>
-      {text}
-      <a class="news-home-more" href="pages/kurashi.html">くらしの制度を見る →</a>
+    <section class="news-home has-illust">
+      <div>
+        <h2>くらしの制度</h2>
+        {text}
+        <a class="news-home-more" href="pages/kurashi.html">くらしの制度を見る →</a>
+      </div>
+      <img class="news-home-illust" src="assets/illust/counter.png" alt="" width="600" height="387">
     </section>
     {KURASHI_END}"""
+
+
+# ---------- まちのイベント・グルメ ----------
+
+def load_town(today):
+    """表示するイベント（終わっていないもの、日付順）とグルメ（新しい順）を返す。"""
+    if not TOWN_DATA.exists():
+        return [], [], []
+    try:
+        items = json.loads(TOWN_DATA.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        return [], [], [f"town.json: JSON の書き方が正しくない（{e}）"]
+    errors, events, foods = [], [], []
+    for t in items:
+        label = f"town.json「{t.get('title', '?')}」"
+        for key in ("kind", "title", "summary", "source_name", "url", "added"):
+            if not str(t.get(key, "")).strip():
+                errors.append(f"{label}: {key} が空")
+        if t.get("kind") not in ("event", "food"):
+            errors.append(f"{label}: kind は event か food")
+        if t.get("url") and not t["url"].startswith("https://"):
+            errors.append(f"{label}: url が https:// で始まっていない")
+        text = " ".join(str(t.get(k, "")) for k in ("title", "summary", "place"))
+        if "茅ヶ崎" in text or "茅ケ崎" in text:
+            errors.append(f"{label}: 茅ヶ崎市の話題は載せない")
+        if t.get("kind") == "event":
+            try:
+                date.fromisoformat(t.get("date_start", ""))
+            except ValueError:
+                errors.append(f"{label}: イベントには date_start（YYYY-MM-DD）が必要")
+                continue
+            if (t.get("date_end") or t["date_start"]) >= today:
+                events.append(t)
+        elif t.get("kind") == "food" and t.get("added", "") >= (
+                date.fromisoformat(today) - timedelta(days=FOOD_DAYS)).isoformat():
+            foods.append(t)
+    events.sort(key=lambda t: (t["date_start"], t["title"]))
+    foods.sort(key=lambda t: t["added"], reverse=True)
+    return events, foods, errors
+
+
+def date_badge(t, today):
+    d = date.fromisoformat(t["date_start"])
+    if t["date_start"] < today:
+        return '<p class="town-date is-open"><span>開催中</span></p>'
+    return (f'<p class="town-date"><span>{d.month}/{d.day}</span>'
+            f'<small>{WEEKDAYS[d.weekday()]}</small></p>')
+
+
+def render_event(t, today):
+    place = f"・{esc(t['place'])}" if t.get("place") else ""
+    return f"""        <article class="town-event">
+          {date_badge(t, today)}
+          <div>
+            <h3><a href="{esc(t['url'])}" target="_blank" rel="noopener">{esc(t['title'])}</a></h3>
+            <p class="town-when">{esc(t.get('when') or '')}{place}</p>
+            <p>{esc(t['summary'])}</p>
+            <p class="news-source">出典：{esc(t['source_name'])}</p>
+          </div>
+        </article>"""
+
+
+def render_food(t):
+    place = f'<p class="town-when">{esc(t["area"])}・{esc(t["place"])}</p>' if t.get("place") else ""
+    return f"""        <article class="news-item">
+          <p class="news-tag">{icon('food')}グルメ</p>
+          <h3><a href="{esc(t['url'])}" target="_blank" rel="noopener">{esc(t['title'])}</a></h3>
+          {place}
+          <p>{esc(t['summary'])}</p>
+          <p class="news-source">出典：{esc(t['source_name'])}・{esc(t['added'])} 掲載</p>
+        </article>"""
+
+
+def render_town_body(events, foods, today):
+    ev = "\n".join(render_event(t, today) for t in events) or \
+        '        <p>いまは載せているイベントがありません。</p>'
+    fd = "\n".join(render_food(t) for t in foods) or \
+        '        <p>新しいお店の話題が見つかったら、ここに載せます。</p>'
+    return f"""    <a class="back-link" href="../index.html">← トップページに戻る</a>
+
+    <section class="hero">
+      <div class="hero-text">
+        <p>藤沢・寒川</p>
+        <h1>まちのイベント・グルメ</h1>
+        <p>お祭りや催し、新しいお店の話題を集めています。日付が過ぎたイベントは自動で外れます。</p>
+      </div>
+      <img class="page-illust" src="../assets/illust/community.png" alt="" width="1000" height="832">
+    </section>
+
+    <section class="news-section">
+      <h2>これからのイベント</h2>
+      <div class="town-events">
+{ev}
+      </div>
+    </section>
+
+    <section class="news-section">
+      <h2>グルメ・新しいお店</h2>
+      <div class="news-list">
+{fd}
+      </div>
+    </section>
+
+{share_links(SITE_URL + "pages/town.html", "まちのイベント・グルメ｜" + SITE_NAME)}
+
+    <p class="news-notice">
+      地域の新聞や観光協会などの発表をもとに、見出し・日時・短い紹介とリンクを載せています。
+      お店やイベントの評価はしていません。広告（PR）記事は載せていません。
+      日時や中止の情報は、必ずリンク先で確かめてください。
+      <a href="about.html">このサイトについて</a>
+    </p>"""
+
+
+def render_town_block(events, foods, today):
+    if events:
+        rows = "\n".join(
+            f'          <li><span>{"開催中" if t["date_start"] < today else esc(date.fromisoformat(t["date_start"]).month) + "/" + esc(date.fromisoformat(t["date_start"]).day)}</span>{esc(t["title"])}</li>'
+            for t in events[:3])
+        body = f"""        <ul class="news-home-list">
+{rows}
+        </ul>"""
+    else:
+        body = "        <p>お祭りや催し、新しいお店の話題を集めていきます。</p>"
+    return f"""{TOWN_START}
+    <section class="news-home has-illust">
+      <div>
+        <h2>まちのイベント・グルメ</h2>
+{body}
+        <a class="news-home-more" href="pages/town.html">イベント・グルメを見る（{len(events) + len(foods)}件）→</a>
+      </div>
+      <img class="news-home-illust" src="assets/illust/community.png" alt="" width="1000" height="832">
+    </section>
+    {TOWN_END}"""
 
 
 def replace_block(text, start_mark, end_mark, block):
@@ -439,6 +611,8 @@ def build():
     briefs, errors = load_briefs()
     kurashi, kurashi_errors = load_kurashi(today)
     errors += kurashi_errors
+    events, foods, town_errors = load_town(today)
+    errors += town_errors
     if errors:
         print("データに問題があります。ページは作りませんでした。")
         for e in errors:
@@ -447,7 +621,7 @@ def build():
     for note in repeated_urls(briefs):
         print("注意：", note)
     if "--check" in sys.argv:
-        print(f"OK：ニュース{len(briefs)}日分・くらしの制度{len(kurashi)}件のデータに問題はありません。")
+        print(f"OK：ニュース{len(briefs)}日分・くらしの制度{len(kurashi)}件・イベント{len(events)}件・グルメ{len(foods)}件のデータに問題はありません。")
         return 0
 
     NEWS_OUT.mkdir(exist_ok=True)
@@ -483,6 +657,8 @@ def build():
     for name, text in outputs.items():
         (NEWS_OUT / name).write_text(text, encoding="utf-8")
 
+    TOWN_OUT.write_text(page("まちのイベント・グルメ", render_town_body(events, foods, today),
+                             description="藤沢・寒川のお祭りや催し、新しいお店の話題"), encoding="utf-8")
     KURASHI_OUT.write_text(page("くらしの制度", render_kurashi_body(kurashi), script="../js/deadline.js"), encoding="utf-8")
 
     index_html = INDEX.read_text(encoding="utf-8")
@@ -491,6 +667,8 @@ def build():
                                    render_index_block(briefs[0] if briefs else None))
         index_html = replace_block(index_html, KURASHI_START, KURASHI_END,
                                    render_kurashi_block(kurashi))
+        index_html = replace_block(index_html, TOWN_START, TOWN_END,
+                                   render_town_block(events, foods, today))
     except ValueError as e:
         print(e)
         return 1
