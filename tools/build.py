@@ -259,9 +259,10 @@ NOTICE = """    <p class="news-notice">
     </p>"""
 
 
-def render_item(item):
+def render_item(item, n=0):
     published = f"・{esc(item['published'])}" if item.get("published") else ""
-    return f"""        <article class="news-item">
+    anchor = f' id="item-{n}"' if n else ""
+    return f"""        <article class="news-item"{anchor}>
           <p class="news-tag">{icon(TOPIC_ICONS.get(item['topic'], 'information'))}{esc(item['topic'])}</p>
           <h3><a href="{esc(item['url'])}" target="_blank" rel="noopener">{esc(item['title'])}</a></h3>
           <p>{esc(item['summary'])}</p>
@@ -292,7 +293,7 @@ def render_brief_body(brief, newer=None, older=None):
             '    <section class="news-section">',
             f"      <h2>{esc(area)}</h2>",
             '      <div class="news-list">',
-            "\n".join(render_item(it) for it in items),
+            "\n".join(render_item(it, brief["items"].index(it) + 1) for it in items),
             "      </div>",
             "    </section>",
         ]
@@ -367,9 +368,10 @@ def render_index_block(latest):
       <p>準備中です。毎朝、暮らしに関わるニュースをまとめてお届けする予定です。</p>
     </section>
     {INDEX_END}"""
+    page_url = f"news/{latest['date']}.html"
     heads = "\n".join(
-        f'          <li><span>{esc(it["area"])}</span>{esc(it["title"])}</li>'
-        for it in latest["items"][:TOP_HEADLINES]
+        f'          <li><a href="{page_url}#item-{i}"><span>{esc(it["area"])}</span>{esc(it["title"])}</a></li>'
+        for i, it in enumerate(latest["items"][:TOP_HEADLINES], 1)
     )
     return f"""{INDEX_START}
     <section class="news-home has-illust">
@@ -491,9 +493,10 @@ def render_kurashi_body(cases):
 
 def render_kurashi_block(cases):
     if cases:
-        soon = next((c for c in cases if c.get("deadline_date")), None)
-        note = f"期限が近いもの：{esc(soon['title'])}（{esc(soon['deadline'])}）" if soon else ""
-        text = f'<p>{len(cases)}件の制度を載せています。</p>\n      <p class="news-home-date">{note}</p>'
+        rows = "\n".join(
+            f'          <li><a href="pages/kurashi.html#{esc(c["id"])}"><span>{"期限 " + esc(c["deadline_date"][5:].replace("-", "/")) if c.get("deadline_date") else "随時"}</span>{esc(c["title"])}</a></li>'
+            for c in cases[:3])
+        text = f'<p class="news-home-date">期限の近い順・{len(cases)}件</p>\n        <ul class="news-home-list">\n{rows}\n        </ul>'
     else:
         text = "<p>準備中です。</p>"
     return f"""{KURASHI_START}
@@ -555,9 +558,9 @@ def date_badge(t, today):
             f'<small>{WEEKDAYS[d.weekday()]}</small></p>')
 
 
-def render_event(t, today):
+def render_event(t, today, n=0):
     place = f"・{esc(t['place'])}" if t.get("place") else ""
-    return f"""        <article class="town-event">
+    return f"""        <article class="town-event" id="ev-{n}">
           {date_badge(t, today)}
           <div>
             <h3><a href="{esc(t['url'])}" target="_blank" rel="noopener">{esc(t['title'])}</a></h3>
@@ -580,7 +583,7 @@ def render_food(t):
 
 
 def render_town_body(events, foods, today):
-    ev = "\n".join(render_event(t, today) for t in events) or \
+    ev = "\n".join(render_event(t, today, i) for i, t in enumerate(events, 1)) or \
         '        <p>いまは載せているイベントがありません。</p>'
     fd = "\n".join(render_food(t) for t in foods) or \
         '        <p>新しいお店の話題が見つかったら、ここに載せます。</p>'
@@ -622,8 +625,8 @@ def render_town_body(events, foods, today):
 def render_town_block(events, foods, today):
     if events:
         rows = "\n".join(
-            f'          <li><span>{"開催中" if t["date_start"] < today else esc(date.fromisoformat(t["date_start"]).month) + "/" + esc(date.fromisoformat(t["date_start"]).day)}</span>{esc(t["title"])}</li>'
-            for t in events[:3])
+            f'          <li><a href="pages/town.html#ev-{i}"><span>{"開催中" if t["date_start"] < today else esc(date.fromisoformat(t["date_start"]).month) + "/" + esc(date.fromisoformat(t["date_start"]).day)}</span>{esc(t["title"])}</a></li>'
+            for i, t in enumerate(events[:3], 1))
         body = f"""        <ul class="news-home-list">
 {rows}
         </ul>"""

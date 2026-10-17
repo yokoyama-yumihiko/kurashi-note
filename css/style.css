@@ -787,3 +787,48 @@ html {
     display: none;
   }
 }
+
+/* トップの見出しの一覧：1行ずつ押せるリンクに */
+.news-home-list a {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: #2B2B2B;
+  text-decoration: none;
+}
+
+.news-home-list a::after {
+  content: "›";
+  margin-left: auto;
+  padding-left: 8px;
+  color: #13A565;
+  font-weight: 700;
+}
+
+.news-home-list a:hover {
+  color: #13A565;
+}
+
+.news-home-list a span {
+  flex-shrink: 0;
+}
+
+@media (max-width: 800px) {
+  .news-home.has-illust {
+    position: relative;
+  }
+
+  .news-home-illust {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    order: 0;
+    max-width: 72px;
+  }
+}
+
+@media (max-width: 800px) {
+  .news-home.has-illust h2 {
+    padding-right: 84px;
+  }
+}
