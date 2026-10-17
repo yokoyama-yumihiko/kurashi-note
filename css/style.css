@@ -507,3 +507,36 @@ header p {
 .site-area {
   white-space: nowrap;
 }
+
+/* ---------- 写真 ---------- */
+
+.area-card.has-photo {
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.area-photo {
+  display: block;
+  width: calc(100% + 56px);
+  height: auto;
+  margin: 0 -28px 20px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.page-photo {
+  margin: 0 0 32px;
+}
+
+.page-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.page-photo figcaption {
+  margin-top: 6px;
+  color: #555555;
+  font-size: 0.8em;
+}
