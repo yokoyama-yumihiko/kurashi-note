@@ -208,6 +208,6 @@ but also to create a development environment the user can understand and maintai
 - 配色・書体・既存のレイアウトは変えない（新しい部品は既存の5色の範囲で足す）
 
 ### サイト名・一言（2026-10-17 本人決定）
-- サイト名：「くらしノート｜藤沢・寒川」（旧 Yokoyama Policy Lab）。<title> の後ろは「くらしノート 藤沢・寒川」
+- サイト名：「くらしノート｜藤沢・寒川」。旧名は表に出さない（本人の指示）。<title> の後ろは「くらしノート 藤沢・寒川」
 - トップの一言：「暮らしの情報を、毎朝まとめて。」
 - リポジトリ名・公開アドレスは変えない（yokoyama-yumihiko-policy-lab のまま）

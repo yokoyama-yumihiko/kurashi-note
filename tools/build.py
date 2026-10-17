@@ -25,7 +25,7 @@ FOOD_DAYS = 60  # グルメを表示しておく日数
 INDEX = ROOT / "index.html"
 JST = timezone(timedelta(hours=9))
 
-SITE_NAME = "くらしノート｜藤沢・寒川"  # 2026-10-17 本人決定（旧 Yokoyama Policy Lab）
+SITE_NAME = "くらしノート｜藤沢・寒川"  # 2026-10-17 本人決定
 TITLE_SUFFIX = "くらしノート 藤沢・寒川"  # <title> では「｜」が重ならないように
 
 # 表示順もこの順。茅ヶ崎市は載せない（2026-10-17 本人決定）
