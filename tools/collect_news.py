@@ -23,6 +23,9 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import editorial  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "data" / "_candidates"
 JST = timezone(timedelta(hours=9))
@@ -216,6 +219,7 @@ def main():
     caps = {"厚生労働省": 5, "デジタル庁": 3, "文部科学省": 3, "BBCニュース Japan": 4}
 
     candidates, report, seen = [], [], set()
+    excluded, held = editorial.excluded_urls(), 0
     for name, read in sources.items():
         try:
             got = []
@@ -225,6 +229,9 @@ def main():
                 if "茅ヶ崎" in c["title"] or "茅ケ崎" in c["title"]:
                     continue
                 if any(w in c["title"] for w in SKIP_WORDS) or DEPT_ONLY.search(c["title"]):
+                    continue
+                if editorial.is_excluded(c["url"], excluded) or editorial.alarm_reason(c["title"], c.get("excerpt", "")):
+                    held += 1
                     continue
                 if c["date"] and not c.get("weekly") and (today - c["date"]).days > days:
                     continue
@@ -267,6 +274,8 @@ def main():
     print(f"候補 {len(candidates)}件 → {out.relative_to(ROOT)}（AI用の短い一覧：{brief_out.relative_to(ROOT)}）")
     for line in report:
         print("  -", line)
+    if held:
+        print(f"  - 編集方針・掲載しないと決めた記事として、候補から外したもの：{held}件")
     return 0
 
 

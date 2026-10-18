@@ -22,6 +22,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build import AREAS, TOPICS  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import editorial  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 JST = timezone(timedelta(hours=9))
 UA = "Mozilla/5.0 (kurashi-note handoff check)"
@@ -58,6 +61,7 @@ def main():
     lines = (block.group(1) if block else text).splitlines()
 
     day = datetime.now(JST).date().isoformat()
+    excluded = editorial.excluded_urls()
     news, town, seido, rejected = [], [], [], []
     for n, line in enumerate(lines, 1):
         line = line.strip()
@@ -74,6 +78,10 @@ def main():
             why.append("リンクが https:// で始まらない")
         if "茅ヶ崎" in title + it.get("summary", "") or "茅ケ崎" in title + it.get("summary", ""):
             why.append("茅ヶ崎市の話題")
+        if editorial.is_excluded(url, excluded):
+            why.append("掲載しないと決めた記事（data/excluded.json）")
+        elif kind == "news" and editorial.alarm_reason(title, it.get("summary", ""), it.get("impact", "")):
+            why.append(editorial.alarm_reason(title, it.get("summary", ""), it.get("impact", "")))
         if kind == "news":
             why += [f"{k} が空" for k in NEWS_KEYS if not str(it.get(k, "")).strip()]
             if it.get("area") and it["area"] not in AREAS:

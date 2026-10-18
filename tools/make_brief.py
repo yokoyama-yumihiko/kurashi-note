@@ -28,6 +28,9 @@ import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import editorial  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 TOWN = ROOT / "data" / "town.json"
 CAND = ROOT / "data" / "_candidates"
@@ -40,13 +43,16 @@ def main():
     candidates = json.loads((CAND / f"{day}.json").read_text(encoding="utf-8"))["candidates"]
     picks = json.loads((CAND / f"{day}.picks.json").read_text(encoding="utf-8"))
 
-    items = []
+    items, excluded = [], editorial.excluded_urls()
     for p in picks["picks"]:
         n = int(p["n"])
         if not 1 <= n <= len(candidates):
             print(f"番号 {n} の候補はありません（1〜{len(candidates)}）")
             return 1
         c = candidates[n - 1]
+        if editorial.is_excluded(c["url"], excluded):
+            print(f"番号 {n}「{c['title']}」は掲載しないと決めた記事です（data/excluded.json）")
+            return 1
         published = ""
         if c.get("date"):
             d = date.fromisoformat(c["date"])

@@ -15,6 +15,9 @@ import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import editorial  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 NEWS_DATA = ROOT / "data" / "news"
 NEWS_OUT = ROOT / "news"
@@ -122,6 +125,8 @@ def check_brief(path, brief):
         text = " ".join(str(item.get(k, "")) for k in ("title", "summary", "impact"))
         if "茅ヶ崎" in text or "茅ケ崎" in text:
             errors.append(f"{label}: 茅ヶ崎市の話題は載せない")
+        if editorial.is_excluded(item.get("url", "")):
+            errors.append(f"{label}: 掲載しないと決めた記事（data/excluded.json）")
 
     day = brief.get("today_in_history")
     if day:
@@ -132,6 +137,18 @@ def check_brief(path, brief):
             errors.append(f"{where} today_in_history: url が https:// で始まっていない")
 
     return errors
+
+
+def alarm_notes(briefs):
+    """編集方針（tools/editorial.py）に当たりそうな記事を「注意」として返す。
+    具体的な危険や行政が対応を求める情報なら載せてよいので、エラーにはしない（公開前に本人が確かめる）。"""
+    notes = []
+    for brief in briefs:
+        for item in brief.get("items", []):
+            why = editorial.alarm_reason(item.get("title", ""), item.get("summary", ""), item.get("impact", ""))
+            if why:
+                notes.append(f"{brief['date']}: 「{item.get('title', '')}」は{why}です。不安をあおらないか確かめてください")
+    return notes
 
 
 def repeated_urls(briefs):
@@ -535,6 +552,8 @@ def load_town(today):
         text = " ".join(str(t.get(k, "")) for k in ("title", "summary", "place"))
         if "茅ヶ崎" in text or "茅ケ崎" in text:
             errors.append(f"{label}: 茅ヶ崎市の話題は載せない")
+        if editorial.is_excluded(t.get("url", "")):
+            errors.append(f"{label}: 掲載しないと決めた記事（data/excluded.json）")
         if t.get("kind") == "event":
             try:
                 date.fromisoformat(t.get("date_start", ""))
@@ -667,6 +686,8 @@ def build():
             print("  -", e)
         return 1
     for note in repeated_urls(briefs):
+        print("注意：", note)
+    for note in alarm_notes(briefs):
         print("注意：", note)
     if "--check" in sys.argv:
         print(f"OK：ニュース{len(briefs)}日分・くらしの制度{len(kurashi)}件・イベント{len(events)}件・グルメ{len(foods)}件のデータに問題はありません。")
