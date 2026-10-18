@@ -5,7 +5,7 @@
 
 テキストの中の ```jsonl ... ``` の各行（1行1件のJSON）を読み、
 - type "news"  → data/news/YYYY-MM-DD.json の items に足す（同じURLは上書き）
-- type "event" / "food" → data/town.json に足す（同じURLは上書き）
+- type "event" / "food" → data/town.json に足す（同じURLがすでにあれば足さず、載っている文を残す）
 - type "seido" → data/_candidates/YYYY-MM-DD.seido.jsonl に置くだけ（くらし制度ノートのDBには入れない。
   登録と3つの確認フラグは、タブ5で本人が確かめてから）
 ChatGPT の書いたリンクが本当にあるか（存在しないURLを作っていないか）を、1件ずつ開いて確かめる。
@@ -112,10 +112,13 @@ def main():
             by_url[i["url"]] = i
         brief["items"] = list(by_url.values())
         path.write_text(json.dumps(brief, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    town_kept = []
     if town:
         path = ROOT / "data" / "town.json"
         old = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
         by_url = {t["url"]: t for t in old}
+        town_kept = [t for t in town if t["url"] in by_url]
+        town = [t for t in town if t["url"] not in by_url]
         for t in town:
             by_url[t["url"]] = t
         path.write_text(json.dumps(list(by_url.values()), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -125,6 +128,10 @@ def main():
         path.write_text("".join(json.dumps(s, ensure_ascii=False) + "\n" for s in seido), encoding="utf-8")
 
     print(f"取り込み：ニュース{len(news)}件・イベント/グルメ{len(town)}件・制度の候補{len(seido)}件（制度はDBに入れず保留）")
+    if town_kept:
+        print(f"イベント/グルメ{len(town_kept)}件はすでに載っているので、前の文のままにしました：")
+        for t in town_kept:
+            print(f"  ・{t['title']}")
     if rejected:
         print("取り込まなかったもの：")
         for r in rejected:
