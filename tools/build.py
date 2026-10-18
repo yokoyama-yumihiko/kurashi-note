@@ -240,6 +240,7 @@ def page(title, body, css="../css/style.css", description="", feed=False, script
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{esc(title)}｜{TITLE_SUFFIX}</title>{meta}
   <link rel="stylesheet" href="{css}?v={ASSET_VER}">
+  <script type="module" src="{css.replace('css/style.css', 'js/linebreak.js')}?v={ASSET_VER}"></script>
 </head>
 
 <body>
@@ -730,6 +731,8 @@ def build():
         block = nav(prefix, active)
         text = re.sub(r'href="((?:\.\./)?css/style\.css)(?:\?v=\d+)?"', rf'href="\1?v={ASSET_VER}"', text)
         text = re.sub(r'src="((?:\.\./)?js/[a-z]+\.js)(?:\?v=\d+)?"', rf'src="\1?v={ASSET_VER}"', text)
+        if "js/linebreak.js" not in text:  # 日本語の改行を文節で（全ページ共通）
+            text = text.replace("</head>", f'  <script type="module" src="{prefix}js/linebreak.js?v={ASSET_VER}"></script>\n</head>', 1)
         if NAV_START in text:
             text = replace_block(text, NAV_START, NAV_END, block)
         else:

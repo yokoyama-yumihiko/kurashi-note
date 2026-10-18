@@ -957,3 +957,83 @@ html {
 .weather-box + .news-home {
   margin-top: 20px;
 }
+
+/* ---------- 改行のバランス（js/linebreak.js と組み合わせ） ---------- */
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+/* ニュースのあとに続く「くらしノートとは」との間をあける */
+.news-home + .hero {
+  margin-top: 56px;
+}
+
+/* ---------- ハザードマップ ---------- */
+
+.wx-hazard {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #C4F0D6;
+  font-size: 0.85em;
+}
+
+.wx-hazard strong {
+  margin-right: 8px;
+  color: #13A565;
+}
+
+.wx-hazard a {
+  margin-left: 10px;
+  color: #1F3A6E;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hazard-section {
+  margin-top: 48px;
+}
+
+.hazard-links {
+  margin: 16px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hazard-links li {
+  padding: 12px 0;
+  border-top: 1px solid #C4F0D6;
+}
+
+.hazard-links li:last-child {
+  border-bottom: 1px solid #C4F0D6;
+}
+
+.hazard-links a {
+  color: #1F3A6E;
+  font-weight: 700;
+}
+
+.hazard-links a::after {
+  content: " ›";
+  color: #13A565;
+}
+
+.hazard-links span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.9em;
+}
+
+.hazard-note {
+  color: #555555;
+  font-size: 0.8em;
+}

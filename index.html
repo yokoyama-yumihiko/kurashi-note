@@ -9,7 +9,7 @@
   <meta
     name="description"
     content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・まちのイベント・グルメ。"
-  ><link rel="stylesheet" href="css/style.css?v=202610180940">
+  ><link rel="stylesheet" href="css/style.css?v=202610180957">
   <meta property="og:title" content="くらしノート｜藤沢・寒川">
   <meta property="og:description" content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・イベント・グルメ">
   <meta property="og:type" content="website">
@@ -17,8 +17,9 @@
   <meta property="og:image" content="https://yokoyama-yumihiko.github.io/kurashi-note/assets/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.png">
-  <script src="js/weather.js?v=202610180940" defer></script>
+  <script src="js/weather.js?v=202610180957" defer></script>
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <script type="module" src="js/linebreak.js?v=202610180957"></script>
 </head>
 
 <body>
@@ -44,6 +45,7 @@
     <section class="weather-box" aria-labelledby="weather-title">
       <p class="wx-title" id="weather-title">藤沢・寒川の天気</p>
       <div id="weather" aria-live="polite"><p class="wx-note">気象庁の予報を読み込んでいます…</p></div>
+      <p class="wx-hazard"><strong>もしもの時に</strong>ハザードマップ：<a href="https://www.city.fujisawa.kanagawa.jp/bosai/bosai/hazardmap/index.html" target="_blank" rel="noopener">藤沢市</a><a href="https://www.town.samukawa.kanagawa.jp/soshiki/chomin/chouminanzen/kikikanri/info/bosai_hazardmap/index.html" target="_blank" rel="noopener">寒川町</a><a href="https://disaportal.gsi.go.jp/maps/" target="_blank" rel="noopener">住所で調べる</a></p>
     </section>
 
     <!-- NEWS:START -->
@@ -65,10 +67,7 @@
     <section class="hero is-text">
       <div class="hero-text">
         <h2>くらしノートとは</h2>
-        <p>
-          地域の課題、政策、データを調べ、
-          暮らしとのつながりをわかりやすく伝えます。
-        </p>
+        <p>地域の課題、政策、データを調べ、暮らしとのつながりをわかりやすく伝えます。</p>
       </div>
     </section>
 
@@ -120,7 +119,7 @@
           <li><a href="pages/town.html#ev-2"><span>開催中</span>『青春ブタ野郎はディアフレンドの夢をみない』　コラボイベント開催</a></li>
           <li><a href="pages/town.html#ev-3"><span>開催中</span>ディズニー公式店が辻堂へ　期間限定ポップアップ開幕</a></li>
         </ul>
-        <a class="news-home-more" href="pages/town.html">イベント・グルメを見る（12件）→</a>
+        <a class="news-home-more" href="pages/town.html">イベント・グルメを見る（11件）→</a>
       </div>
       <img class="news-home-illust" src="assets/illust/community.png" alt="" width="1000" height="832">
     </section>

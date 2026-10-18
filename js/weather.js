@@ -103,7 +103,7 @@
       return '<div class="wx-row' + (n ? " is-next" : "") + '">' +
         '<span class="wx-icon" style="-webkit-mask-image:url(assets/icons/wx_' + icon(code) + '.svg);mask-image:url(assets/icons/wx_' + icon(code) + '.svg)" aria-hidden="true"></span>' +
         '<div class="wx-main"><p><strong>' + (k === now ? "今日" : "明日") + "</strong> " + esc(dayLabel(t)) + " " +
-        esc(wx.weathers[i].replace(/\u3000/g, " ")) + "</p>" +
+        esc(wx.weathers[i].replace(/[\u3000 ]+/g, "").replace(/(.)所により/g, "$1、所により")) + "</p>" +
         '<p class="wx-sub">' + temp + (pop !== null ? '<span class="wx-pop">降水 ' + pop + "%</span>" : "") + "</p>" +
         (chips ? '<p class="wx-chips">' + chips + "</p>" : "") + "</div></div>";
     }).join("");
