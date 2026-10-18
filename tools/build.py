@@ -183,6 +183,14 @@ def load_briefs():
 # 全ページ共通のメニュー（上に固定。スマホは横にスライドできるタブ）
 NAV_START = "<!-- NAV:START -->"
 NAV_END = "<!-- NAV:END -->"
+FOOTER_START = "<!-- FOOTER:START -->"
+FOOTER_END = "<!-- FOOTER:END -->"
+# お問い合わせ（Googleフォーム、2026-10-18 本人決定）。空のあいだはフッターに出さない
+FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfKwRwbf1iX7zSeb_OOZTekVoDZOfABKhSrxkV2KA-8U_Gp6Q/viewform"
+# 書体（Noto Sans JP）。どの端末でも同じ字形で見えるように Google Fonts から読む
+FONT_LINKS = """<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">"""
 NAV_ITEMS = [  # (key, パス, パソコンでの表示, スマホでの表示)
     ("home", "index.html", "ホーム", "ホーム"),
     ("news", "news/index.html", "今朝のニュース", "ニュース"),
@@ -218,6 +226,26 @@ def nav(prefix="../", active=""):
     </details>
   </div>
   {NAV_END}"""
+
+
+def footer(prefix="../"):
+    """全ページ共通のいちばん下（お問い合わせ・このサイトについて・RSS）。"""
+    contact = ""
+    if FORM_URL:
+        contact = f"""
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">お問い合わせ</h2>
+      <p>情報の誤りのご指摘、情報の提供、ご意見はこちらからお寄せください。返信が必要な方は、フォームにメールアドレスをお書きください。</p>
+      <a class="contact-button" href="{FORM_URL}" target="_blank" rel="noopener">お問い合わせフォームを開く</a>
+      <p class="contact-note">Googleフォームが開きます。市役所・町役場への申請や相談はできません。手続きは各窓口へお問い合わせください。</p>
+    </section>"""
+    return f"""{FOOTER_START}
+  <footer class="site-footer">{contact}
+    <nav class="footer-links" aria-label="このサイトについて"><a href="{prefix}pages/about.html">このサイトについて</a><a href="{prefix}news/feed.xml">RSS（今朝のニュース）</a></nav>
+    <p class="footer-note">市や町の公式サイトではありません。内容は必ず公式の案内で確かめてください。</p>
+    <p class="footer-copy">© くらしノート｜藤沢・寒川</p>
+  </footer>
+  {FOOTER_END}"""
 
 
 def head_extras(title, description, prefix="../"):
@@ -256,6 +284,7 @@ def page(title, body, css="../css/style.css", description="", feed=False, script
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{esc(title)}｜{TITLE_SUFFIX}</title>{meta}
+  {FONT_LINKS}
   <link rel="stylesheet" href="{css}?v={ASSET_VER}">
   <script type="module" src="{css.replace('css/style.css', 'js/linebreak.js')}?v={ASSET_VER}"></script>
 </head>
@@ -265,6 +294,7 @@ def page(title, body, css="../css/style.css", description="", feed=False, script
   <main>
 {body}
   </main>
+  {footer(css.replace("css/style.css", ""))}
 </body>
 </html>
 """
@@ -511,9 +541,17 @@ def render_kurashi_body(cases):
 
 def render_kurashi_block(cases):
     if cases:
-        rows = "\n".join(
-            f'          <li><a href="pages/kurashi.html#{esc(c["id"])}"><span>{"期限 " + esc(c["deadline_date"][5:].replace("-", "/")) if c.get("deadline_date") else "随時"}</span>{esc(c["title"])}</a></li>'
-            for c in cases[:3])
+        today = datetime.now(JST).date()
+        rows = []
+        for c in cases[:3]:
+            label, soon = "随時", ""
+            if c.get("deadline_date"):
+                left = (date.fromisoformat(c["deadline_date"]) - today).days
+                label = "期限 " + esc(c["deadline_date"][5:].replace("-", "/"))
+                if left <= 7:  # 1週間以内の期限は目立たせる
+                    soon = f'<em class="soon">{"あと" + str(left) + "日" if left > 0 else "今日まで"}</em>'
+            rows.append(f'          <li><a href="pages/kurashi.html#{esc(c["id"])}"><span>{label}{soon}</span>{esc(c["title"])}</a></li>')
+        rows = "\n".join(rows)
         text = f'<p class="news-home-date">期限の近い順・{len(cases)}件</p>\n        <ul class="news-home-list">\n{rows}\n        </ul>'
     else:
         text = "<p>準備中です。</p>"
@@ -752,6 +790,13 @@ def build():
         block = nav(prefix, active)
         text = re.sub(r'href="((?:\.\./)?css/style\.css)(?:\?v=\d+)?"', rf'href="\1?v={ASSET_VER}"', text)
         text = re.sub(r'src="((?:\.\./)?js/[a-z]+\.js)(?:\?v=\d+)?"', rf'src="\1?v={ASSET_VER}"', text)
+        if "fonts.googleapis.com" not in text:
+            text = re.sub(r'(\n\s*)(<link rel="stylesheet" href="(?:\.\./)?css/style\.css)', rf"\1{FONT_LINKS}\1\2", text, count=1)
+        if FOOTER_START in text:
+            text = replace_block(text, FOOTER_START, FOOTER_END, footer(prefix))
+        else:
+            text = re.sub(r"\s*<footer>.*?</footer>", "", text, flags=re.S)
+            text = text.replace("</body>", f"  {footer(prefix)}\n</body>", 1)
         if "js/linebreak.js" not in text:  # 日本語の改行を文節で（全ページ共通）
             text = text.replace("</head>", f'  <script type="module" src="{prefix}js/linebreak.js?v={ASSET_VER}"></script>\n</head>', 1)
         if NAV_START in text:

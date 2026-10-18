@@ -9,7 +9,7 @@
   <meta
     name="description"
     content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・まちのイベント・グルメ。"
-  ><link rel="stylesheet" href="css/style.css?v=202610181007">
+  ><link rel="stylesheet" href="css/style.css?v=202610181448">
   <meta property="og:title" content="くらしノート｜藤沢・寒川">
   <meta property="og:description" content="暮らしの情報を、毎朝まとめて。藤沢・寒川の今朝のニュース・くらしの制度・イベント・グルメ">
   <meta property="og:type" content="website">
@@ -17,9 +17,9 @@
   <meta property="og:image" content="https://yokoyama-yumihiko.github.io/kurashi-note/assets/ogp.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.png">
-  <script src="js/weather.js?v=202610181007" defer></script>
+  <script src="js/weather.js?v=202610181448" defer></script>
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <script type="module" src="js/linebreak.js?v=202610181007"></script>
+  <script type="module" src="js/linebreak.js?v=202610181448"></script>
 </head>
 
 <body>
@@ -46,6 +46,7 @@
       <p class="wx-title" id="weather-title">藤沢・寒川の天気</p>
       <div id="weather" aria-live="polite"><p class="wx-note">気象庁の予報を読み込んでいます…</p></div>
       <p class="wx-hazard"><strong>もしもの時に</strong>ハザードマップ：<a href="https://www.city.fujisawa.kanagawa.jp/bosai/bosai/hazardmap/index.html" target="_blank" rel="noopener">藤沢市</a><a href="https://www.town.samukawa.kanagawa.jp/soshiki/chomin/chouminanzen/kikikanri/info/bosai_hazardmap/index.html" target="_blank" rel="noopener">寒川町</a><a href="https://disaportal.gsi.go.jp/maps/" target="_blank" rel="noopener">住所で調べる</a></p>
+      <p class="wx-hazard wx-call"><strong>迷ったら電話で相談</strong><a href="tel:%237119">救急相談 #7119</a><span>（24時間）</span><a href="tel:%238000">子どもの救急 #8000</a><span>（夜間・土日祝）</span><a href="https://www.pref.kanagawa.jp/docs/t3u/faq/p3265.html" target="_blank" rel="noopener">くわしく</a></p>
     </section>
 
     <!-- NEWS:START -->
@@ -64,35 +65,6 @@
     </section>
     <!-- NEWS:END -->
 
-    <section class="hero is-text">
-      <div class="hero-text">
-        <h2>くらしノートとは</h2>
-        <p>地域の課題、政策、データを調べ、暮らしとのつながりをわかりやすく伝えます。</p>
-      </div>
-    </section>
-
-    <nav class="guide" aria-label="このサイトでできること">
-      <a class="guide-item" href="news/index.html">
-        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/information_line.svg);mask-image:url(assets/icons/information_line.svg)" aria-hidden="true"></span>
-        <strong>今朝のニュース</strong>
-        <span>暮らしに関わるニュースを毎朝まとめて</span>
-      </a>
-      <a class="guide-item" href="pages/kurashi.html">
-        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/money_line.svg);mask-image:url(assets/icons/money_line.svg)" aria-hidden="true"></span>
-        <strong>くらしの制度</strong>
-        <span>給付・補助・申し込みを期限の近い順に</span>
-      </a>
-      <a class="guide-item" href="pages/town.html">
-        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/food_line.svg);mask-image:url(assets/icons/food_line.svg)" aria-hidden="true"></span>
-        <strong>イベント・グルメ</strong>
-        <span>お祭りや催し、新しいお店の話題</span>
-      </a>
-      <a class="guide-item" href="#area">
-        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/municipality_line.svg);mask-image:url(assets/icons/municipality_line.svg)" aria-hidden="true"></span>
-        <strong>地域から探す</strong>
-        <span>藤沢市・寒川町の課題や取り組み</span>
-      </a>
-    </nav>
 
 
     <!-- KURASHI:START -->
@@ -101,7 +73,7 @@
         <h2>くらしの制度</h2>
         <p class="news-home-date">期限の近い順・2件</p>
         <ul class="news-home-list">
-          <li><a href="pages/kurashi.html#ng0r7bqajv48eutkenfw"><span>期限 10/23</span>令和9年度4月 藤沢市認可保育施設入所申込み</a></li>
+          <li><a href="pages/kurashi.html#ng0r7bqajv48eutkenfw"><span>期限 10/23<em class="soon">あと5日</em></span>令和9年度4月 藤沢市認可保育施設入所申込み</a></li>
           <li><a href="pages/kurashi.html#3kksh457s85tenh2ptl2"><span>期限 11/30</span>藤沢市くらし応援カード</a></li>
         </ul>
         <a class="news-home-more" href="pages/kurashi.html">くらしの制度を見る →</a>
@@ -130,24 +102,61 @@
 
 <div class="area-cards">
 
-  <a class="area-card has-photo" href="pages/fujisawa.html">
-    <img class="area-photo" src="assets/photos/fujisawa_card.jpg" alt="海から見た江の島の風景" width="800" height="450">
+  <a class="area-card" href="pages/fujisawa.html">
     <h3>藤沢市</h3>
-    <p>藤沢の地域課題・政策を見る</p>
+    <p>ハザードマップ・ごみの出し方など、暮らし・防災の情報</p>
   </a>
 
   <a class="area-card" href="pages/samukawa.html">
   <h3>寒川町</h3>
-  <p>寒川の地域課題・政策を見る</p>
+  <p>ハザードマップ・ごみの出し方など、暮らし・防災の情報</p>
 </a>
 
 </div>
 </section>
-  </main>
 
-  <footer>
-    <p><a class="footer-link" href="pages/about.html">このサイトについて</a></p>
-    <p>© くらしノート｜藤沢・寒川</p>
+    <section class="hero is-text about-home">
+      <div class="hero-text">
+        <h2>くらしノートとは</h2>
+        <p>藤沢市・寒川町の暮らし・防災の情報を調べ、わかりやすく伝えます。</p>
+      </div>
+    </section>
+
+    <nav class="guide" aria-label="このサイトでできること">
+      <a class="guide-item" href="news/index.html">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/information_line.svg);mask-image:url(assets/icons/information_line.svg)" aria-hidden="true"></span>
+        <strong>今朝のニュース</strong>
+        <span>暮らしに関わるニュースを毎朝まとめて</span>
+      </a>
+      <a class="guide-item" href="pages/kurashi.html">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/money_line.svg);mask-image:url(assets/icons/money_line.svg)" aria-hidden="true"></span>
+        <strong>くらしの制度</strong>
+        <span>給付・補助・申し込みを期限の近い順に</span>
+      </a>
+      <a class="guide-item" href="pages/town.html">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/food_line.svg);mask-image:url(assets/icons/food_line.svg)" aria-hidden="true"></span>
+        <strong>イベント・グルメ</strong>
+        <span>お祭りや催し、新しいお店の話題</span>
+      </a>
+      <a class="guide-item" href="#area">
+        <span class="topic-icon" style="-webkit-mask-image:url(assets/icons/municipality_line.svg);mask-image:url(assets/icons/municipality_line.svg)" aria-hidden="true"></span>
+        <strong>地域から探す</strong>
+        <span>藤沢市・寒川町の暮らし・防災の情報</span>
+      </a>
+    </nav>
+  </main>
+  <!-- FOOTER:START -->
+  <footer class="site-footer">
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">お問い合わせ</h2>
+      <p>情報の誤りのご指摘、情報の提供、ご意見はこちらからお寄せください。返信が必要な方は、フォームにメールアドレスをお書きください。</p>
+      <a class="contact-button" href="https://docs.google.com/forms/d/e/1FAIpQLSfKwRwbf1iX7zSeb_OOZTekVoDZOfABKhSrxkV2KA-8U_Gp6Q/viewform" target="_blank" rel="noopener">お問い合わせフォームを開く</a>
+      <p class="contact-note">Googleフォームが開きます。市役所・町役場への申請や相談はできません。手続きは各窓口へお問い合わせください。</p>
+    </section>
+    <nav class="footer-links" aria-label="このサイトについて"><a href="pages/about.html">このサイトについて</a><a href="news/feed.xml">RSS（今朝のニュース）</a></nav>
+    <p class="footer-note">市や町の公式サイトではありません。内容は必ず公式の案内で確かめてください。</p>
+    <p class="footer-copy">© くらしノート｜藤沢・寒川</p>
   </footer>
+  <!-- FOOTER:END -->
 </body>
 </html>

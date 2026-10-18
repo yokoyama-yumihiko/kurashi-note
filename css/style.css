@@ -1037,3 +1037,142 @@ dd {
   color: #555555;
   font-size: 0.8em;
 }
+
+/* ---------- 2026-10-18 見直し：幅・書体・並び・フッター ---------- */
+
+/* パソコンでは1行が長くなりすぎないよう、中身の幅を1040pxまでに */
+:root {
+  --gutter: max(6vw, calc((100vw - 1040px) / 2));
+}
+
+header,
+main,
+footer {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.site-nav {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.top-photo {
+  width: calc(100% + 2 * var(--gutter));
+  margin-left: calc(-1 * var(--gutter));
+  margin-right: calc(-1 * var(--gutter));
+}
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+}
+
+/* 地域カード：写真はトップの大きな写真と重なるので外し、2枚の高さをそろえる */
+.area-cards .area-card {
+  padding: 20px 24px;
+}
+
+.area-cards .area-card h3 {
+  margin-bottom: 4px;
+}
+
+.area-cards .area-card h3::after {
+  content: " ›";
+}
+
+/* 「くらしノートとは」はページの終わりに（毎日見る情報を先に） */
+.about-home {
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid #C4F0D6;
+}
+
+/* 迷ったら電話で相談 */
+.wx-call a {
+  margin-left: 10px;
+}
+
+.wx-call span {
+  color: #555555;
+  font-size: 0.9em;
+}
+
+/* フッター（全ページ共通）：お問い合わせ・このサイトについて */
+.site-footer {
+  margin-top: 40px;
+  padding-top: 40px;
+  padding-bottom: 48px;
+  border-top: 1px solid #C4F0D6;
+  background-color: #FFFFFF;
+}
+
+.contact {
+  margin-bottom: 32px;
+  padding: 28px;
+  border-radius: 8px;
+  background-color: #C4F0D6;
+}
+
+.contact h2 {
+  margin-bottom: 8px;
+}
+
+.contact-button {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: #13A565;
+  color: #FFFFFF;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.contact-button:hover {
+  background-color: #1F3A6E;
+}
+
+.contact-note {
+  margin-top: 12px;
+  color: #555555;
+  font-size: 0.85em;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #1F3A6E;
+  font-weight: 700;
+}
+
+.footer-note,
+.footer-copy {
+  color: #555555;
+  font-size: 0.85em;
+}
+
+/* くらしの制度：1週間以内の期限 */
+.news-home-list .soon {
+  display: block;
+  width: fit-content;
+  margin-top: 4px;
+  padding: 0 8px;
+  border-radius: 4px;
+  background-color: #13A565;
+  color: #FFFFFF;
+  font-size: 0.8em;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .area-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

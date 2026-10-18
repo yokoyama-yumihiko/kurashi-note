@@ -4,7 +4,7 @@
 import { loadDefaultJapaneseParser } from "https://cdn.jsdelivr.net/npm/budoux@0.9.3/+esm";
 
 var parser = loadDefaultJapaneseParser();
-var SEL = "main h1, main h2, main h3, main p, main li, main dt, main dd, main figcaption, main a, header h1, header p";
+var SEL = "main h1, main h2, main h3, main p, main li, main dt, main dd, main figcaption, main a, header h1, header p, footer h2, footer p";
 var LONG = 7;
 
 function kind(c) {
