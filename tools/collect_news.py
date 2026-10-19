@@ -122,6 +122,30 @@ def townnews(edition, area, must, source_name, today):
                "date": day, "excerpt": excerpt, "weekly": True}
 
 
+# 藤沢市の13地区の市民センター（地区の行事・地域回覧・自治会連合会などの新着）
+CENTERS = {"kata-c": "片瀬", "kuge-c": "鵠沼", "tsuji-c": "辻堂", "mura-c": "村岡", "fuji-c": "藤沢",
+           "meiji-c": "明治", "zengyo-c": "善行", "snooba-c": "湘南大庭", "mutsu-c": "六会",
+           "sndai-c": "湘南台", "endou-c": "遠藤", "chougo-c": "長後", "gosho-c": "御所見"}
+
+
+def centers(today):
+    """各市民センターのトップにある「新着情報」（日付つき、5件ずつ）。地区レベルの話題を拾う。"""
+    base = "https://www.city.fujisawa.kanagawa.jp"
+    for code, name in CENTERS.items():
+        try:
+            text = fetch(f"{base}/{code}/index.html")
+        except Exception:
+            continue
+        rows = re.findall(r'class="date"><p>([^<]+)</p></td><td><p><a href="([^"]+)">(.*?)</a>', text, re.S)
+        for md, href, title in rows:
+            day = md_to_date(md, today)
+            if not day or (today - day).days > 30:  # 地区の行事は早めに載るので1か月分を見る
+                continue
+            yield {"source_name": f"{name}市民センター", "area": "藤沢市", "title": f"【{name}地区】{clean(title)}",
+                   "url": href if href.startswith("http") else base + href,
+                   "date": day, "weekly": True}
+
+
 def kanko(today):
     """藤沢市観光協会のトップにあるイベント一覧（開催期間つき）。"""
     text = fetch("https://www.fujisawa-kanko.jp/")
@@ -209,6 +233,7 @@ def main():
         "タウンニュース藤沢": lambda: townnews("0601", "藤沢市", None, "タウンニュース藤沢版", today),
         "タウンニュース寒川": lambda: townnews("0603", "寒川町", "寒川", "タウンニュース茅ヶ崎・寒川版", today),
         "藤沢市観光協会 イベント": lambda: kanko(today),
+        "藤沢市 地区の市民センター": lambda: centers(today),
         # 全国（国の発表）と海外は、暮らしに関わるものを少しだけ
         "厚生労働省": lambda: rss("https://www.mhlw.go.jp/stf/news.rdf", "厚生労働省", "全国", today, NATIONAL_SKIP),
         "デジタル庁": lambda: rss("https://www.digital.go.jp/rss/news.xml", "デジタル庁", "全国", today, NATIONAL_SKIP),
@@ -216,7 +241,7 @@ def main():
         "BBCニュース Japan": lambda: rss("https://feeds.bbci.co.uk/japanese/rss.xml", "BBCニュース Japan", "海外", today),
     }
     # 出典ごとの上限（全国・海外は少なめ）
-    caps = {"厚生労働省": 5, "デジタル庁": 3, "文部科学省": 3, "BBCニュース Japan": 4}
+    caps = {"藤沢市 地区の市民センター": 20, "厚生労働省": 5, "デジタル庁": 3, "文部科学省": 3, "BBCニュース Japan": 4}
 
     candidates, report, seen = [], [], set()
     excluded, held = editorial.excluded_urls(), 0

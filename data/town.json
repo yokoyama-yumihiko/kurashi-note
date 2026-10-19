@@ -258,5 +258,31 @@
     "source_name": "寒川町観光協会（Instagram）",
     "url": "https://www.instagram.com/p/Dd8d8BpAWA3/",
     "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "第50回村岡ふれあいまつり",
+    "when": "11月7日（土）・8日（日）午前10時〜午後3時",
+    "date_start": "2026-11-07",
+    "date_end": "2026-11-08",
+    "place": "村岡市民センター",
+    "area": "藤沢市",
+    "summary": "村岡地区のおまつり。7日は書道パフォーマンス、8日は村岡中学校吹奏楽部のオープニング（午前9時40分〜）。車・バイクでの来場はできません。",
+    "source_name": "村岡市民センター",
+    "url": "https://www.city.fujisawa.kanagawa.jp/mura-c/fureaimatsuri.html",
+    "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "第47回明治地区ふるさとまつり",
+    "when": "11月7日（土）・8日（日）、15日（日）はチャリティダンスパーティ",
+    "date_start": "2026-11-07",
+    "date_end": "2026-11-15",
+    "place": "",
+    "area": "藤沢市",
+    "summary": "明治地区のサークル・団体が日ごろの活動を発表し、子どもから大人まで楽しめる体験もあります。時間・会場は明治市民センター（0466-34-5660）へ。",
+    "source_name": "明治市民センター",
+    "url": "https://www.city.fujisawa.kanagawa.jp/meiji-c/kurashi/shimin/chiiki/meji/sakuru/46kaimaturi.html",
+    "added": "2026-10-19"
   }
 ]
