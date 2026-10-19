@@ -307,6 +307,16 @@ NOTICE = """    <p class="news-notice">
     </p>"""
 
 
+def source_link(url):
+    """出典の行の終わりに付ける、元の記事へのリンク。"""
+    return f'<br><a href="{esc(url)}" target="_blank" rel="noopener">元の記事を読む（{esc(url_host(url))}）</a>'
+
+
+def url_host(url):
+    from urllib.parse import urlparse
+    return urlparse(url).netloc.removeprefix("www.")
+
+
 def render_item(item, n=0):
     published = f"・{esc(item['published'])}" if item.get("published") else ""
     anchor = f' id="item-{n}"' if n else ""
@@ -315,7 +325,7 @@ def render_item(item, n=0):
           <h3><a href="{esc(item['url'])}" target="_blank" rel="noopener">{esc(item['title'])}</a></h3>
           <p>{esc(item['summary'])}</p>
           <p class="news-impact"><span>暮らしへの影響</span>{esc(item['impact'])}</p>
-          <p class="news-source">出典：{esc(item['source_name'])}{published}</p>
+          <p class="news-source">出典：{esc(item['source_name'])}{published}{source_link(item['url'])}</p>
         </article>"""
 
 
@@ -624,7 +634,7 @@ def render_event(t, today, n=0):
             <h3><a href="{esc(t['url'])}" target="_blank" rel="noopener">{esc(t['title'])}</a></h3>
             <p class="town-when">{esc(t.get('when') or '')}{place}</p>
             <p>{esc(t['summary'])}</p>
-            <p class="news-source">出典：{esc(t['source_name'])}</p>
+            <p class="news-source">出典：{esc(t['source_name'])}{source_link(t['url'])}</p>
           </div>
         </article>"""
 
@@ -636,7 +646,7 @@ def render_food(t):
           <h3><a href="{esc(t['url'])}" target="_blank" rel="noopener">{esc(t['title'])}</a></h3>
           {place}
           <p>{esc(t['summary'])}</p>
-          <p class="news-source">出典：{esc(t['source_name'])}・{esc(t['added'])} 掲載</p>
+          <p class="news-source">出典：{esc(t['source_name'])}・{esc(t['added'])} 掲載{source_link(t['url'])}</p>
         </article>"""
 
 
