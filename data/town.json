@@ -167,5 +167,70 @@
     "source_name": "タウンニュース藤沢版",
     "url": "https://www.townnews.co.jp/0601/2026/10/16/857597.html",
     "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "文化祭イベント～中学校部活動アート展～",
+    "when": "10月20日（火）〜26日（月）",
+    "date_start": "2026-10-20",
+    "date_end": "2026-10-26",
+    "place": "寒川町民センター展示コーナー",
+    "area": "寒川町",
+    "summary": "町内中学校の美術部とイラスト文芸部によるイラスト作品の展示。",
+    "source_name": "寒川町",
+    "url": "https://www.town.samukawa.kanagawa.jp/soshiki/kyoiku/shogaigakushu/shogaigakushu/info/bunka/bunka_3/20852.html",
+    "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "ペットの避難訓練と愛犬のしつけ教室",
+    "when": "10月24日（土）12時〜14時30分",
+    "date_start": "2026-10-24",
+    "date_end": "",
+    "place": "さむかわ中央公園ステージ北側",
+    "area": "寒川町",
+    "summary": "町内在住のペットの飼い主などを対象に避難訓練としつけ教室を開催。無料、定員30人。申込期限は10月21日。",
+    "source_name": "寒川町",
+    "url": "https://www.town.samukawa.kanagawa.jp/soshiki/kankyokeizai/kankyo/kankyohozen/event/1471926413845.html",
+    "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "歴史と芸術が交差する藤沢宿　新旧空間で楽しむ10日間",
+    "when": "10月24日（土）・25日（日）10時30分〜16時（一部会場は営業時間による）",
+    "date_start": "2026-10-24",
+    "date_end": "2026-10-25",
+    "place": "旧東海道藤沢宿周辺の6会場",
+    "area": "藤沢市",
+    "summary": "歴史的建造物などで現代アートを鑑賞する催し。会期中の今週末開催分。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/16/857600.html",
+    "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "障害者と舞台共演　出演者を募集",
+    "when": "11月7日（土）からワークショップを実施",
+    "date_start": "2026-11-07",
+    "date_end": "",
+    "place": "本郷台駅前ケアプラザ",
+    "area": "藤沢市",
+    "summary": "知的障害のある若者と演劇をつくるワークショップ。11月7日、8日、15日、22日に実施し、応募は10月中。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/16/857589.html",
+    "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "地域活動との出合いの場　11月７日に見本市",
+    "when": "11月7日（土）9時30分〜13時30分",
+    "date_start": "2026-11-07",
+    "date_end": "",
+    "place": "藤沢市役所本庁舎1階ほか",
+    "area": "藤沢市",
+    "summary": "市内19団体が参加する地域活動見本市。体験講座などを開催し、入場無料。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/16/857581.html",
+    "added": "2026-10-19"
   }
 ]
