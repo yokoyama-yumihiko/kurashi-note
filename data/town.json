@@ -284,5 +284,83 @@
     "source_name": "明治市民センター",
     "url": "https://www.city.fujisawa.kanagawa.jp/meiji-c/kurashi/shimin/chiiki/meji/sakuru/46kaimaturi.html",
     "added": "2026-10-19"
+  },
+  {
+    "kind": "event",
+    "title": "〖藤沢市民ギャラリー〗今週の展示",
+    "when": "10月20日（火）～25日（日）",
+    "date_start": "2026-10-20",
+    "date_end": "2026-10-25",
+    "place": "藤沢市民ギャラリー",
+    "area": "藤沢市",
+    "summary": "第58回藤沢市中学校美術展。市立中学校生徒の美術科授業作品を展示する。",
+    "source_name": "藤沢市",
+    "url": "https://www.city.fujisawa.kanagawa.jp/c-hall/kyoiku/bunka/shisetsu/gallery-tenji_new.html",
+    "added": "2026-10-20"
+  },
+  {
+    "kind": "event",
+    "title": "龍の口竹灯籠２０２６は１１月１３日（金）・１４日（土）に開催いたします",
+    "when": "11月13日（金）・14日（土）17時～20時",
+    "date_start": "2026-11-13",
+    "date_end": "2026-11-14",
+    "place": "龍口寺境内",
+    "area": "藤沢市",
+    "summary": "龍口寺境内で約3000基の竹灯籠を灯す催し。",
+    "source_name": "藤沢市観光公式ホームページ",
+    "url": "https://www.fujisawa-kanko.jp/news/261002.html",
+    "added": "2026-10-20"
+  },
+  {
+    "kind": "event",
+    "title": "三浦半島エリアの移住に関するトーク＆交流イベントを開催します！",
+    "when": "11月14日（土）13時～16時30分",
+    "date_start": "2026-11-14",
+    "date_end": "",
+    "place": "面白法人カヤック ぼくらの会議棟（鎌倉市御成町4-31）",
+    "area": "神奈川県",
+    "summary": "三浦半島エリアへの移住を検討する人向けのトーク・交流イベント。",
+    "source_name": "神奈川県",
+    "url": "https://www.pref.kanagawa.jp/docs/y2w/prs/r6343176.html",
+    "added": "2026-10-20"
+  },
+  {
+    "kind": "event",
+    "title": "労災や年金の無料相談（秋の街頭無料相談会）",
+    "when": "10月29日（木）12時〜19時",
+    "date_start": "2026-10-29",
+    "date_end": "",
+    "place": "JR辻堂駅北口自由通路",
+    "area": "藤沢市",
+    "summary": "神奈川県社会保険労務士会藤沢支部が、労災・雇用保険・健康保険・年金・労働問題の相談に無料で応じます。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/20/858466.html",
+    "added": "2026-10-20"
+  },
+  {
+    "kind": "event",
+    "title": "ふじさわ国際交流フェスティバル",
+    "when": "10月25日（日）11時〜15時（荒天中止）",
+    "date_start": "2026-10-25",
+    "date_end": "",
+    "place": "藤沢駅北口サンパール広場",
+    "area": "藤沢市",
+    "summary": "世界の食べ物や民芸品の販売、日本の伝統文化体験、各国の歌や踊りのステージ、スタンプラリーなど。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/20/858290.html",
+    "added": "2026-10-20"
+  },
+  {
+    "kind": "event",
+    "title": "第6回トクトク歩数チャレンジ（参加申込）",
+    "when": "申込 11月6日（金）〜12月14日（月）／チャレンジ 12月14日〜2027年1月14日",
+    "date_start": "2026-11-06",
+    "date_end": "2027-01-14",
+    "place": "県の歩数計アプリ「マイME-BYOカルテ」",
+    "area": "藤沢市",
+    "summary": "ふじさわ歩くプロジェクトの歩数チャレンジ。32日間歩いて、協賛企業からのプレゼントを目指します。",
+    "source_name": "ふじさわ歩くプロジェクト（Instagram）",
+    "url": "https://www.instagram.com/p/DejA56FAW_7/",
+    "added": "2026-10-20"
   }
 ]
