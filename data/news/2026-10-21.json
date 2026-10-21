@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-21",
+  "keywords": [
+    "乳幼児健診",
+    "狂犬病予防注射",
+    "生涯学習"
+  ],
+  "items": [
+    {
+      "title": "2027年3月から狂犬病予防注射の制度が変わります",
+      "summary": "2027年3月2日から、狂犬病予防注射を4月～6月に受ける決まりがなくなり、1年中いつでも受けられるようになる。年1回の接種と注射済票の装着は変わらない。",
+      "impact": "犬を飼っている人は、接種の時期を選びやすくなる。3月に接種すると、その年度の注射済票が交付される。",
+      "area": "藤沢市",
+      "topic": "くらし・お金",
+      "source_name": "藤沢市",
+      "url": "https://www.city.fujisawa.kanagawa.jp/seiei/kurashi/dobutsu/inuneko/chusha_seido-kaisei.html",
+      "published": "2026-10-21"
+    },
+    {
+      "title": "放課後支援事業所のご案内",
+      "summary": "藤沢市が10月1日時点の放課後支援事業所の情報を公開している。11月10日には放課後等デイサービス事業所の合同説明会を開催する。",
+      "impact": "障がいのある子どもの放課後の支援先を探す際に利用できる。",
+      "area": "藤沢市",
+      "topic": "子育て・教育",
+      "source_name": "藤沢市",
+      "url": "https://www.city.fujisawa.kanagawa.jp/kodomo-ss/syougai/houdeiitirann.html",
+      "published": "2026-10-20"
+    },
+    {
+      "title": "1歳6か月児健康診査",
+      "summary": "藤沢市が1歳6か月児の集団健康診査の日程と受診方法を案内している。対象家庭には個別通知を送付する。",
+      "impact": "対象家庭は健診日程と受診方法を確認できる。",
+      "area": "藤沢市",
+      "topic": "子育て・教育",
+      "source_name": "藤沢市",
+      "url": "https://www.city.fujisawa.kanagawa.jp/oyako/kenko/kenko/boshi/kenkoshinsa/16.html",
+      "published": "2026-10-20"
+    },
+    {
+      "title": "2歳児歯科健康診査",
+      "summary": "藤沢市が2歳児の歯科健康診査を案内している。南または北保健センターで実施する。",
+      "impact": "対象家庭は子どもの歯科健診の受診日程を確認できる。",
+      "area": "藤沢市",
+      "topic": "子育て・教育",
+      "source_name": "藤沢市",
+      "url": "https://www.city.fujisawa.kanagawa.jp/oyako/kenko/kenko/boshi/kenkoshinsa/niba.html",
+      "published": "2026-10-20"
+    },
+    {
+      "title": "片瀬市民センター/しおさいセンターの生涯学習事業案内",
+      "summary": "片瀬地区で親子向け防災講座や子育て講座、スマートフォン相談、野鳥観察などの参加募集が案内されている。申し込み期限は講座ごとに異なる。",
+      "impact": "地域で利用できる学習・交流の機会を確認できる。",
+      "area": "藤沢市",
+      "topic": "その他",
+      "source_name": "藤沢市",
+      "url": "https://www.city.fujisawa.kanagawa.jp/kata-c/kouminkan/top.html",
+      "published": "2026-10-20"
+    },
+    {
+      "title": "放送通信講座「藤沢浮世絵百科事典」",
+      "summary": "藤澤浮世絵館の所蔵作品を専門家が解説する放送通信講座が実施されている。12月1日まで毎週火曜日に放送され、土曜日に再放送がある。",
+      "impact": "自宅で藤沢の歴史や浮世絵について学べる。",
+      "area": "藤沢市",
+      "topic": "その他",
+      "source_name": "藤沢市",
+      "url": "https://www.city.fujisawa.kanagawa.jp/manabi/kyoiku/shogai/daigaku/hosotsushin/r8hosotsushin-03.html",
+      "published": "2026-10-13"
+    },
+    {
+      "title": "消費者物価指数8月分結果（2026年10月掲載分）",
+      "summary": "神奈川県が県内主要3市の8月の消費者物価指数を掲載した。前年同月比で横浜市は2.0％、川崎市は1.8％、相模原市は2.2％上昇した。",
+      "impact": "生活費の変化を把握する参考になるが、藤沢市単独の指数ではない。",
+      "area": "神奈川県",
+      "topic": "くらし・お金",
+      "source_name": "神奈川県",
+      "url": "https://www.pref.kanagawa.jp/docs/x6z/tc40/kouri/kouri.html",
+      "published": "2026-10-20"
+    },
+    {
+      "title": "シニアライフサポーター養成講座",
+      "summary": "地域活動や福祉、健康などを学ぶ講座の申し込みが10月20日に始まった。受講料は9000円で、申し込み期限は12月17日。",
+      "impact": "県内で地域活動に参加したい人が学習の機会を得られる。",
+      "area": "神奈川県",
+      "topic": "福祉・医療・介護",
+      "source_name": "神奈川県",
+      "url": "https://www.pref.kanagawa.jp/docs/u3x/komikare/r8kouza/sinia_raifusapo-ta-.html",
+      "published": "2026-10-20"
+    }
+  ]
+}

@@ -362,5 +362,70 @@
     "source_name": "ふじさわ歩くプロジェクト（Instagram）",
     "url": "https://www.instagram.com/p/DejA56FAW_7/",
     "added": "2026-10-20"
+  },
+  {
+    "kind": "event",
+    "title": "フードバンク認証制度説明会の開催のお知らせ",
+    "when": "11月2日（月）14時～16時",
+    "date_start": "2026-11-02",
+    "date_end": "",
+    "place": "オンライン（Teams）",
+    "area": "全国",
+    "summary": "フードバンク認証制度や食品寄附関連の仕組みを説明するオンライン説明会。事前申し込みが必要。",
+    "source_name": "消費者庁",
+    "url": "https://www.caa.go.jp/notice/entry/047796/",
+    "added": "2026-10-21"
+  },
+  {
+    "kind": "event",
+    "title": "放課後支援事業所のご案内",
+    "when": "11月10日（火）10時～12時",
+    "date_start": "2026-11-10",
+    "date_end": "",
+    "place": "明治市民センター ウォルガ湘南体育室",
+    "area": "藤沢市",
+    "summary": "藤沢市放課後等デイサービス事業所合同説明会。参加無料、事前申し込み不要。室内履きが必要。",
+    "source_name": "藤沢市",
+    "url": "https://www.city.fujisawa.kanagawa.jp/kodomo-ss/syougai/houdeiitirann.html",
+    "added": "2026-10-21"
+  },
+  {
+    "kind": "event",
+    "title": "ふじさわ国際交流フェスティバル",
+    "when": "10月25日（日）11時～15時",
+    "date_start": "2026-10-25",
+    "date_end": "",
+    "place": "藤沢駅北口 サンパール広場",
+    "area": "藤沢市",
+    "summary": "世界の食べ物や民芸品の販売、浮世絵など日本の伝統文化体験、世界の歌や踊りのステージ、スタンプラリーなど。荒天中止。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/20/858290.html",
+    "added": "2026-10-21"
+  },
+  {
+    "kind": "event",
+    "title": "秋の街頭無料相談会（労災・年金など）",
+    "when": "10月29日（木）12時～19時",
+    "date_start": "2026-10-29",
+    "date_end": "",
+    "place": "JR辻堂駅北口自由通路",
+    "area": "藤沢市",
+    "summary": "神奈川県社会保険労務士会藤沢支部が、労災・雇用保険・健康保険・年金・労働問題の相談に無料で応じる。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/20/858466.html",
+    "added": "2026-10-21"
+  },
+  {
+    "kind": "event",
+    "title": "大人のための星空への招待状",
+    "when": "10月30日（金）13時15分～14時45分",
+    "date_start": "2026-10-30",
+    "date_end": "",
+    "place": "湘南台文化センターこども館 宇宙劇場",
+    "area": "藤沢市",
+    "summary": "プラネタリウムで秋冬の星空と宇宙の話を楽しむ中学生以上向けの教室。500円、定員120人。申し込みは同館（0466-45-1500）へ電話で。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/21/858584.html",
+    "added": "2026-10-21"
   }
 ]
