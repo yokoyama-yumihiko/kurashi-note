@@ -443,19 +443,6 @@
   },
   {
     "kind": "event",
-    "title": "寒川町文化祭 写真展",
-    "when": "10月20日（火）～25日（日）9時～17時（初日は13時から、最終日は16時まで）",
-    "date_start": "2026-10-20",
-    "date_end": "2026-10-25",
-    "place": "寒川町民センター展示室",
-    "area": "寒川町",
-    "summary": "寒川町文化祭の写真展。町民センター展示室で開催。",
-    "source_name": "寒川町",
-    "url": "https://www.town.samukawa.kanagawa.jp/soshiki/kyoiku/shogaigakushu/shogaigakushu/info/bunka/bunka_3/20770.html",
-    "added": "2026-10-22"
-  },
-  {
-    "kind": "event",
     "title": "寒川音楽祭（寒川町文化祭）",
     "when": "10月24日（土）13時～16時、25日（日）10時～15時30分",
     "date_start": "2026-10-24",
@@ -531,5 +518,57 @@
     "place": "アイクロス湘南6階カンファレンスルーム",
     "summary": "地域の創業・新事業を支援するビジネスコンテストのファイナリストがプレゼンする。会場観覧とオンライン配信あり。観覧・視聴は記事内のフォームから申込。",
     "url": "https://www.townnews.co.jp/0601/2026/10/20/858264.html"
+  },
+  {
+    "kind": "event",
+    "title": "さむかわまちぐるみ美化運動",
+    "when": "11月1日（日）8時～9時、天候等による延期日は11月8日（日）",
+    "date_start": "2026-11-01",
+    "date_end": "",
+    "place": "寒川町内全域の道路・公共の場所等",
+    "area": "寒川町",
+    "summary": "町内の美化清掃。個人の申し込みは不要。家庭ごみは出さず、指定の分別方法に従う。",
+    "source_name": "寒川町",
+    "url": "https://www.town.samukawa.kanagawa.jp/event/1369903820572.html",
+    "added": "2026-10-23"
+  },
+  {
+    "kind": "event",
+    "title": "辻堂市民図書館 講演会「浮世絵すごろくの魅力」",
+    "when": "11月3日（火・祝）14時～16時",
+    "date_start": "2026-11-03",
+    "date_end": "",
+    "place": "辻堂市民図書館2階ホール",
+    "area": "藤沢市",
+    "summary": "藤澤浮世絵館の学芸員が浮世絵の絵双六を解説する。先着50人。来館・電話・ファクスで申し込む。",
+    "source_name": "藤沢市図書館",
+    "url": "https://www.lib.city.fujisawa.kanagawa.jp/event/?id=954",
+    "added": "2026-10-23"
+  },
+  {
+    "kind": "event",
+    "title": "総合市民図書館「リサイクルブックフェア」を開催します",
+    "when": "11月10日（火）14時～17時45分、入替制",
+    "date_start": "2026-11-10",
+    "date_end": "",
+    "place": "藤沢市総合市民図書館2階ホール・第一会議室",
+    "area": "藤沢市",
+    "summary": "図書・CD・DVDを無料配付する。1人15点まで。正午から整理券を配付し、各回45人の定員制。",
+    "source_name": "藤沢市図書館",
+    "url": "https://www.lib.city.fujisawa.kanagawa.jp/event/?id=948",
+    "added": "2026-10-23"
+  },
+  {
+    "kind": "event",
+    "title": "新林小で逃げ切れ　11月15日 逃走中",
+    "when": "11月15日（日）8時30分集合～11時30分頃",
+    "date_start": "2026-11-15",
+    "date_end": "",
+    "place": "新林小学校",
+    "area": "藤沢市",
+    "summary": "新林おやじの会が「逃走中」を開く。参加児童、ハンター役（中学生以上）、スタッフを募集。参加は保護者同伴。無料。申し込みは10月25日（日）まで専用フォームから。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/21/858578.html",
+    "added": "2026-10-23"
   }
 ]
