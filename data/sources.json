@@ -1,0 +1,22 @@
+{
+  "_説明": "情報源の信頼度リスト（tools/verify.py が使う）。ドメインの末尾が一致すれば当てはまる。ここにないドメインは HOLD（本人が確かめてから足す）。tier：行政＝国・県・市町の公式／公共＝公共交通・公的機関／地域報道／報道／観光＝観光協会など／SNS＝公式アカウント（本文を機械で読めないので本人確認）。2026-10-26時点：既存データで使った・取得テストに通ったドメインだけを入れた",
+  "domains": {
+    "city.fujisawa.kanagawa.jp": "行政",
+    "lib.city.fujisawa.kanagawa.jp": "行政",
+    "town.samukawa.kanagawa.jp": "行政",
+    "pref.kanagawa.jp": "行政",
+    "go.jp": "行政",
+    "kokusen.go.jp": "行政",
+    "jma.go.jp": "行政",
+    "gov-online.go.jp": "行政",
+    "c-nexco.co.jp": "公共",
+    "shonan-monorail.co.jp": "公共",
+    "townnews.co.jp": "地域報道",
+    "nhk.or.jp": "報道",
+    "bbc.com": "報道",
+    "fnn.jp": "報道",
+    "fujisawa-kanko.jp": "観光",
+    "enoshima-seacandle.com": "観光",
+    "instagram.com": "SNS"
+  }
+}

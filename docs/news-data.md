@@ -32,5 +32,6 @@
 - `area`：藤沢市／寒川町／神奈川県／全国／海外（茅ヶ崎市は載せない）
 - `topic`：子育て・教育／福祉・医療・介護／防災・安全／交通・まちづくり／環境・エネルギー／くらし・お金／仕事・経済／平和・人権／その他
 - `keywords`・`today_in_history`・`published` は省略できる
+- `check`：検証の状態（tools/verify.py が書く。手で書かない）。`{"status": "PUBLISH_APPROVED", "hash": "...", "source": 日時, "fact": 日時, "editorial": 日時, "publish": 日時}`。2026-10-27 以降のデータは、これが PUBLISH_APPROVED で内容のハッシュが合う記事だけ公開できる（data/town.json のうち added が 2026-10-27 以降のイベント・グルメも同じ）。根拠の文・HOLDの理由は公開しない data/_verify/ にだけ置く
 - 記事の本文・写真は転載しない。見出し・短い要約・リンクだけにする
 - 記念日など出典が確かめられないものは載せない

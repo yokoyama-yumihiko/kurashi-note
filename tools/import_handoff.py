@@ -80,8 +80,8 @@ def main():
             why.append("茅ヶ崎市の話題")
         if editorial.is_excluded(url, excluded):
             why.append("掲載しないと決めた記事（data/excluded.json）")
-        elif kind == "news" and editorial.alarm_reason(title, it.get("summary", ""), it.get("impact", "")):
-            why.append(editorial.alarm_reason(title, it.get("summary", ""), it.get("impact", "")))
+        # 事件・事故・政治などの言葉は、ここでは一律に捨てない（2026-10-26）。
+        # tools/verify.py が文脈（住民に必要な行動があるか）を見て HOLD か警告にする
         if kind == "news":
             why += [f"{k} が空" for k in NEWS_KEYS if not str(it.get(k, "")).strip()]
             if it.get("area") and it["area"] not in AREAS:
@@ -144,7 +144,13 @@ def main():
         print("取り込まなかったもの：")
         for r in rejected:
             print("  -", r)
-    print("次は python3 tools/build.py --check")
+        # 取り込まなかった理由は公開しない記録に残す（data/_verify/ は .gitignore）
+        log = ROOT / "data" / "_verify" / f"{day}.import.txt"
+        log.parent.mkdir(parents=True, exist_ok=True)
+        with log.open("a", encoding="utf-8") as f:
+            f.write(f"# {datetime.now(JST).isoformat(timespec='seconds')} {sys.argv[1]}\n")
+            f.write("".join(f"- {r}\n" for r in rejected))
+    print("次は python3 tools/verify.py run（検証）→ python3 tools/verify.py show")
     return 0
 
 

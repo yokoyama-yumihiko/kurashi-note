@@ -1,0 +1,9 @@
+#!/bin/sh
+# 公開（push）の前に、公開前の検証関門を通す（2026-10-26 本人決定）。
+# 本人の承認（PUBLISH_APPROVED）がない記事・検証記録のない記事・HOLD の記事があれば push を止める。
+# 入れ方（Mac で1回だけ）：cp tools/hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+cd "$(git rev-parse --show-toplevel)" || exit 1
+if ! python3 tools/build.py --check; then
+  echo "公開前の確認で止めました（本人の承認がない記事などがあります）。python3 tools/verify.py show で確かめてください。"
+  exit 1
+fi

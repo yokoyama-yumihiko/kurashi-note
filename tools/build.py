@@ -2,7 +2,7 @@
 
 使い方（リポジトリの一番上で）:
     python3 tools/build.py          # ページを作る
-    python3 tools/build.py --check  # データの確認だけ（ファイルは書かない）
+    python3 tools/build.py --check  # 公開前の確認（ファイルは書かない）。本人の承認がない記事があれば止める
 
 外部ライブラリは使わない（Python 3.9 標準のみ）。
 データの形は docs/news-data.md を参照。data/kurashi.json は tools/export_kurashi.py が作る。
@@ -17,8 +17,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import editorial  # noqa: E402
+import gate  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
+VERIFY_DATA = ROOT / "data" / "_verify"  # 検証記録（公開しない。Mac にだけある）
 NEWS_DATA = ROOT / "data" / "news"
 NEWS_OUT = ROOT / "news"
 KURASHI_DATA = ROOT / "data" / "kurashi.json"
@@ -164,18 +166,71 @@ def repeated_urls(briefs):
     return notes
 
 
-def load_briefs():
-    briefs, errors = [], []
+_private = {}
+
+
+def private_status(day, url):
+    """Mac にある検証記録（data/_verify/D.json）での状態。記録がなければ None（クラウドなど）。"""
+    if day not in _private:
+        path = VERIFY_DATA / f"{day}.json"
+        _private[day] = ({e["url"]: e["status"] for e in json.loads(path.read_text(encoding="utf-8"))["entries"]}
+                         if path.exists() else None)
+    if _private[day] is None:
+        return None
+    return _private[day].get(url, "検証記録にない")
+
+
+def gate_items(items, day, where, strict):
+    """公開前の検証関門（tools/gate.py）。GATE_START 以降のデータだけにかける。
+    表示するのは EDITORIAL_APPROVED 以上の記事。--check（公開前）は、本人の承認（PUBLISH_APPROVED）が
+    ない記事が1件でもあればエラーにする。戻り値：(表示する記事, エラー, 注意)"""
+    shown, errors, notes = [], [], []
+    today = datetime.now(JST).date().isoformat()
+    for it in items:
+        status, problem = gate.stamp_status(it)
+        priv = private_status(day, it.get("url"))
+        if not problem and priv is None and day >= today:
+            # 今日の記事は、この環境に検証記録（data/_verify/）があるときだけ認める。
+            # クラウドでスタンプだけ手で書かれた記事を通さないため（run〜approve を同じ作業の中で行えば記録はある）
+            problem = "今日の記事の検証記録がこの環境にない（python3 tools/verify.py run から）"
+        if not problem and priv is not None and priv != status:
+            problem = f"公開データの状態（{status}）が検証記録（{priv}）と合わない"
+        label = f"{where}「{it.get('title', '?')[:30]}」"
+        if strict and (problem or status != "PUBLISH_APPROVED"):
+            errors.append(f"{label}: 公開できない（{problem or status}）")
+        if not problem and gate.rank(status) >= gate.rank("EDITORIAL_APPROVED"):
+            shown.append(it)
+            if status != "PUBLISH_APPROVED":
+                notes.append(f"{label}: 本人の承認待ち（--check で止まります）")
+        else:
+            notes.append(f"{label}: 表示しない（{problem or status}）")
+    return shown, errors, notes
+
+
+def load_briefs(strict=False):
+    briefs, errors, notes = [], [], []
     for path in sorted(NEWS_DATA.glob("*.json")):
         try:
             brief = json.loads(path.read_text(encoding="utf-8"))
         except json.JSONDecodeError as e:
             errors.append(f"{path.name}: JSON の書き方が正しくない（{e}）")
             continue
-        errors.extend(check_brief(path, brief))
+        if gate.gated(path.stem):
+            if not brief.get("items"):
+                notes.append(f"{path.name}: 載せられる記事がない（HOLD・未検証）ので、この日のページは作らない")
+                continue
+            errors.extend(check_brief(path, brief))
+            shown, errs, nts = gate_items(brief["items"], path.stem, path.name, strict)
+            errors += errs
+            notes += nts
+            if not shown:
+                continue
+            brief = {**brief, "items": shown}
+        else:
+            errors.extend(check_brief(path, brief))
         briefs.append(brief)
     briefs.sort(key=lambda b: b["date"], reverse=True)
-    return briefs, errors
+    return briefs, errors, notes
 
 
 # ---------- ページの部品 ----------
@@ -579,16 +634,22 @@ def render_kurashi_block(cases):
 
 # ---------- まちのイベント・グルメ ----------
 
-def load_town(today):
+def load_town(today, strict=False):
     """表示するイベント（終わっていないもの、日付順）とグルメ（新しい順）を返す。"""
     if not TOWN_DATA.exists():
-        return [], [], []
+        return [], [], [], []
     try:
         items = json.loads(TOWN_DATA.read_text(encoding="utf-8"))
     except json.JSONDecodeError as e:
-        return [], [], [f"town.json: JSON の書き方が正しくない（{e}）"]
-    errors, events, foods = [], [], []
+        return [], [], [f"town.json: JSON の書き方が正しくない（{e}）"], []
+    errors, events, foods, notes = [], [], [], []
     for t in items:
+        if gate.gated(t.get("added", "")):
+            shown, errs, nts = gate_items([t], t["added"], "town.json", strict)
+            errors += errs
+            notes += nts
+            if not shown:
+                continue
         label = f"town.json「{t.get('title', '?')}」"
         for key in ("kind", "title", "summary", "source_name", "url", "added"):
             if not str(t.get(key, "")).strip():
@@ -615,7 +676,7 @@ def load_town(today):
             foods.append(t)
     events.sort(key=lambda t: (t["date_start"], t["title"]))
     foods.sort(key=lambda t: t["added"], reverse=True)
-    return events, foods, errors
+    return events, foods, errors, notes
 
 
 def date_badge(t, today):
@@ -723,11 +784,13 @@ def replace_block(text, start_mark, end_mark, block):
 
 def build():
     today = datetime.now(JST).date().isoformat()
-    briefs, errors = load_briefs()
+    strict = "--check" in sys.argv  # 公開前の確認。本人の承認がない記事があれば止める
+    briefs, errors, gate_notes = load_briefs(strict)
     kurashi, kurashi_errors = load_kurashi(today)
     errors += kurashi_errors
-    events, foods, town_errors = load_town(today)
+    events, foods, town_errors, town_notes = load_town(today, strict)
     errors += town_errors
+    gate_notes += town_notes
     if errors:
         print("データに問題があります。ページは作りませんでした。")
         for e in errors:
@@ -737,6 +800,8 @@ def build():
         print("注意：", note)
     for note in alarm_notes(briefs):
         print("注意：", note)
+    for note in gate_notes:
+        print("検証：", note)
     if "--check" in sys.argv:
         print(f"OK：ニュース{len(briefs)}日分・くらしの制度{len(kurashi)}件・イベント{len(events)}件・グルメ{len(foods)}件のデータに問題はありません。")
         return 0

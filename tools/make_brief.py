@@ -95,7 +95,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / f"{day}.json"
     out.write_text(json.dumps(brief, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"{len(items)}本 → {out.relative_to(ROOT)}（次は python3 tools/build.py --check）")
+    print(f"{len(items)}本 → {out.relative_to(ROOT)}（次は python3 tools/verify.py run）")
     return 0
 
 
