@@ -987,5 +987,89 @@
       "editorial": "2026-11-02T09:27:44+09:00",
       "publish": "2026-11-02T09:31:19+09:00"
     }
+  },
+  {
+    "kind": "event",
+    "title": "ふじさわ下水道フェア",
+    "when": "10:00～15:00。荒天中止",
+    "date_start": "2026-11-08",
+    "date_end": "",
+    "place": "辻堂浄化センター",
+    "area": "藤沢市",
+    "summary": "下水道施設の見学や水処理に関する体験企画を実施。駐車場なし。",
+    "source_name": "藤沢市",
+    "url": "https://www.city.fujisawa.kanagawa.jp/gesui-ke/machizukuri/gesuido/jigyo/gesuifea.html",
+    "added": "2026-11-03",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "c3c800b51e93f78c",
+      "source": "2026-11-03T09:56:51+09:00",
+      "fact": "2026-11-03T09:57:02+09:00",
+      "editorial": "2026-11-03T09:57:02+09:00",
+      "publish": "2026-11-03T10:09:17+09:00"
+    }
+  },
+  {
+    "kind": "event",
+    "title": "司法書士がアドバイス　11月７・21日に無料相談",
+    "when": "14:30～17:30。11月21日にも開催",
+    "date_start": "2026-11-07",
+    "date_end": "",
+    "place": "フジサワ名店ビル6階",
+    "area": "藤沢市",
+    "summary": "相続、遺言、相続登記、債務整理、成年後見などの司法書士無料相談会。申込不要。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/10/30/859759.html",
+    "added": "2026-11-03",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "2f76cfaea1601076",
+      "source": "2026-11-03T09:56:51+09:00",
+      "fact": "2026-11-03T10:09:16+09:00",
+      "editorial": "2026-11-03T10:09:16+09:00",
+      "publish": "2026-11-03T10:09:17+09:00"
+    }
+  },
+  {
+    "kind": "event",
+    "title": "最高の｢のり弁｣作ろう　11月14日 藤沢市民センター",
+    "when": "10:30～12:30",
+    "date_start": "2026-11-14",
+    "date_end": "",
+    "place": "藤沢市民センター調理室",
+    "area": "藤沢市",
+    "summary": "江戸前ちば海苔などを使った弁当作り体験。大人1500円、小中学生1000円、未就学児500円。主催団体InstagramのDMで申込。",
+    "source_name": "タウンニュース藤沢版",
+    "url": "https://www.townnews.co.jp/0601/2026/11/03/860501.html",
+    "added": "2026-11-03",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "9ce9c3ac35982472",
+      "source": "2026-11-03T09:56:51+09:00",
+      "fact": "2026-11-03T10:09:16+09:00",
+      "editorial": "2026-11-03T10:09:16+09:00",
+      "publish": "2026-11-03T10:09:17+09:00"
+    }
+  },
+  {
+    "kind": "event",
+    "title": "藤沢市民講座（日本大学生物資源科学部）の開催について",
+    "when": "13:00～14:00。12月19日にも別テーマで開催",
+    "date_start": "2026-11-14",
+    "date_end": "",
+    "place": "日本大学生物資源科学部本館4階大講堂",
+    "area": "藤沢市",
+    "summary": "遺伝と環境をテーマにした無料講座。市内在住・在勤・在学者対象、定員200人。開催日の2日前までに申込。",
+    "source_name": "日本大学生物資源科学部",
+    "url": "https://www.brs.nihon-u.ac.jp/news/22493/",
+    "added": "2026-11-03",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "eb39c2fd852fef32",
+      "source": "2026-11-03T09:56:51+09:00",
+      "fact": "2026-11-03T10:09:16+09:00",
+      "editorial": "2026-11-03T10:09:16+09:00",
+      "publish": "2026-11-03T10:09:17+09:00"
+    }
   }
 ]
