@@ -557,8 +557,11 @@ def verify_one(kind, item, d, sources, past, seido, same_day):
     else:
         page.update({"title": info["title"][:120], "h1": info["h1"][:120], "body_len": len(info["body"]),
                      "dates": info["dates"]})
-        path = urllib.parse.urlparse(got["final_url"]).path
-        if path in ("", "/") or LISTY.search(path) and path.count("/") <= 2:
+        parsed = urllib.parse.urlparse(got["final_url"])
+        path = parsed.path
+        # /news/?id=1000 のように記事番号がクエリにあるものは個別記事（藤沢市図書館など。2026-11-06）
+        has_item_id = re.search(r"(?:^|&)id=\d+(?:&|$)", parsed.query)
+        if path in ("", "/") or LISTY.search(path) and path.count("/") <= 2 and not has_item_id:
             holds.append(f"個別記事ではなく一覧・トップのページらしい（{path or '/'}）")
         elif len(info["body"]) < 150:
             holds.append(f"本文が短すぎる（{len(info['body'])}文字）")
