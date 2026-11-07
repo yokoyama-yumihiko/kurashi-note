@@ -1449,5 +1449,47 @@
       "editorial": "2026-11-07T07:26:45+09:00",
       "publish": "2026-11-07T07:26:45+09:00"
     }
+  },
+  {
+    "kind": "event",
+    "title": "宇宙関連産業への参入セミナー（ロボリンク）",
+    "date_start": "2026-12-11",
+    "date_end": "",
+    "when": "15:00～17:00（14:30受付）",
+    "place": "ロボット企業交流拠点ロボリンク セミナールーム（藤沢市藤沢559 角若松ビル6F）",
+    "area": "藤沢市",
+    "summary": "宇宙関連産業への参入を考える企業などに向けたセミナー。参加無料、定員30名（先着順）。11月10日からWebフォームで申込受付。主催は神奈川県、共催は藤沢市。",
+    "source_name": "藤沢市産業・商店街 Instagram（fujisawa_industry_official）",
+    "url": "https://www.instagram.com/p/DfGp43IJubq/",
+    "added": "2026-11-08",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "58fa981730c71e72",
+      "source": "2026-11-08T07:54:44+09:00",
+      "fact": "2026-11-08T07:54:44+09:00",
+      "editorial": "2026-11-08T07:54:44+09:00",
+      "publish": "2026-11-08T07:56:10+09:00"
+    }
+  },
+  {
+    "kind": "event",
+    "title": "農福マルシェ　藤沢駅北口サンパール広場",
+    "date_start": "2026-11-08",
+    "date_end": "",
+    "when": "10:00～15:00",
+    "place": "サンパール広場（藤沢駅北口ペデストリアンデッキ）",
+    "area": "藤沢市",
+    "summary": "農福連携に取り組む農家と福祉事業所が、地場野菜や焼き芋、お菓子、ハンドメイド雑貨などを持ち寄って販売する。主催は藤沢市農福連携地域協議会。",
+    "source_name": "藤沢市農業水産課 Instagram（oishii_fujisawa_san）",
+    "url": "https://www.instagram.com/p/DfYabSmkiOn/",
+    "added": "2026-11-08",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "005ea460adfb0db0",
+      "source": "2026-11-08T07:56:10+09:00",
+      "fact": "2026-11-08T07:56:10+09:00",
+      "editorial": "2026-11-08T07:56:10+09:00",
+      "publish": "2026-11-08T07:56:10+09:00"
+    }
   }
 ]
