@@ -1533,5 +1533,47 @@
       "editorial": "2026-11-09T14:43:18+09:00",
       "publish": "2026-11-09T14:43:58+09:00"
     }
+  },
+  {
+    "kind": "event",
+    "title": "南仲通り商店会で秋の感謝SALEスクラッチくじ　20～26日",
+    "when": "スクラッチ期間。商品券は12月31日まで使用可",
+    "date_start": "2026-11-20",
+    "date_end": "2026-11-26",
+    "place": "南仲通り商店会内（藤沢市本町1-11-9周辺）",
+    "area": "藤沢市",
+    "summary": "お買い上げ1,000円ごとにスクラッチカード1枚（上限5枚、なくなり次第終了）。2,000円または500円の商品券が当たる。問い合わせは0466-22-3352（松月堂わびすけ）。",
+    "source_name": "藤沢市産業労働課Instagram（fujisawa_industry_official）",
+    "url": "https://www.instagram.com/p/DfOSmWegYl5/",
+    "added": "2026-11-10",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "c13c639e3d1494cd",
+      "source": "2026-11-10T09:15:12+09:00",
+      "fact": "2026-11-10T09:15:12+09:00",
+      "editorial": "2026-11-10T09:15:12+09:00",
+      "publish": "2026-11-10T09:15:19+09:00"
+    }
+  },
+  {
+    "kind": "event",
+    "title": "通りんぴっく2026　15日 辻堂元町の緑の広場",
+    "when": "10:00～14:00",
+    "date_start": "2026-11-15",
+    "date_end": "",
+    "place": "緑の広場 第121号（藤沢市辻堂元町4-1）",
+    "area": "藤沢市",
+    "summary": "辻堂海岸通り商栄会の催し。フリーマーケット、ハズレなしのガラポン抽選会、飲食ブース、キッチンカーなど。問い合わせは0466-36-8966（喜又商店）。",
+    "source_name": "藤沢市産業労働課Instagram（fujisawa_industry_official）",
+    "url": "https://www.instagram.com/p/DfOSmWegYl5/?img_index=1",
+    "added": "2026-11-10",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "8bde61e9d2286b69",
+      "source": "2026-11-10T09:15:12+09:00",
+      "fact": "2026-11-10T09:15:12+09:00",
+      "editorial": "2026-11-10T09:15:12+09:00",
+      "publish": "2026-11-10T09:15:19+09:00"
+    }
   }
 ]
