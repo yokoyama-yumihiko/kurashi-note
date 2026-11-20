@@ -1617,5 +1617,26 @@
       "editorial": "2026-11-20T09:47:51+09:00",
       "publish": "2026-11-20T09:48:04+09:00"
     }
+  },
+  {
+    "kind": "event",
+    "title": "ぽんぽこフリースペース（子育て）",
+    "when": "12月4日（金）10時～",
+    "date_start": "2026-12-04",
+    "date_end": "",
+    "place": "長後市民センター 体育室",
+    "area": "藤沢市",
+    "summary": "長後市民センターの親子で楽しむ子育ての場。毎月開催で、次回は12月4日（金）10時から体育室で。",
+    "source_name": "長後市民センター（Instagram）",
+    "url": "https://www.instagram.com/chougokun/reel/DfidiVgTOo6KeXtDgwmXp_PWbe6CqK41X_0FvI0/",
+    "added": "2026-11-20",
+    "check": {
+      "status": "PUBLISH_APPROVED",
+      "hash": "16be158cec38494a",
+      "source": "2026-11-20T09:51:42+09:00",
+      "fact": "2026-11-20T09:51:42+09:00",
+      "editorial": "2026-11-20T09:51:42+09:00",
+      "publish": "2026-11-20T09:51:42+09:00"
+    }
   }
 ]
