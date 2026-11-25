@@ -82,7 +82,7 @@ ChatGPT では見られない Instagram の告知を、Mac の Chrome（本人�
 
 - 見るアカウント（藤沢観光公式がフォローしている地元アカウントから選んだ。茅ヶ崎市・市外の観光協会は見ない）：
   visit_fujisawa（藤沢観光公式）／fujisawakyun（藤沢市）／fujisawa_scene（藤沢市観光協会）／fujisawa_industry_official（藤沢市 産業・商店街）／oishii_fujisawa_san（藤沢市農業水産課）／samuel_cocking_garden（江の島サムエル・コッキング苑）／enoshima_fishermansmarche／chougokun（長後）／fujisawa.kyunwalk／samukawa_kankou（寒川町観光協会）／samukawa_official（寒川町）／shonanchiku.kankou（湘南地区観光振興協議会）。増やすときはここに足す
-- やり方：プロフィールページを開き、投稿一覧の画像の代替テキスト（本文の冒頭が入っている）から「10月・11月・12月」などの日付があるものだけ取り出す。これからの催しだけ、投稿ページを開いて本文全体を読み、日時・場所・料金・申込を確かめる（本文は投稿ページの span[dir=auto] のいちばん長いもの）
+- やり方（2026-11-25 改訂）：一覧画面の画像の説明文には本文が入らなくなった。プロフィールページの投稿ID（URLの英数字）から投稿日を計算し、前回更新以降の投稿だけ投稿ページを開いて本文（meta og:description）を読み、今日以降の日付があるものを候補にする。JSは .claude/commands/朝ニュース.md の P・Q（横山のフォルダ側）
 - 1日1回、1アカウントあたり最近の15件まで。人が見るのと同じ程度にとどめる（Instagram は自動収集を規約で制限している）。非公開の API は使わない
 - 載せ方：data/town.json に足す。出典名は「◯◯（Instagram）」、url は投稿のURL。公式サイトに同じ情報があれば、そちらのURLを優先する
 - 書かないもの：終わった催し・申込が締め切られたもの・お店の宣伝だけの投稿・個人のアカウント
